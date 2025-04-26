@@ -5,7 +5,7 @@ import type { Content } from '../types/content'; // ili gde god da ti je definis
 export const useContentMutation = () => {
   const queryClient = useQueryClient();
 
-  const createContent = useMutation<unknown, unknown, Content>({
+  const createContent = useMutation<unknown, unknown, any>({
     mutationFn: (formData) => apiCreateContent(formData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['contents'] });

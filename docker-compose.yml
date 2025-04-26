@@ -1,61 +1,67 @@
 version: '3'
 
 services:
-  php:
-    build:
-      context: ./portfolio-laravel
-      dockerfile: Dockerfile
-    container_name: portfolio-php
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    container_name: nginx-proxy
     restart: unless-stopped
-    working_dir: /var/www/laravel
+    ports:
+      - "80:80"
+      - "443:443"
     volumes:
-      - ./portfolio-laravel:/var/www/laravel
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./certs:/etc/nginx/certs
+      - ./vhost.d:/etc/nginx/vhost.d
+      - ./html:/usr/share/nginx/html
     networks:
       - portfolio-network
-    depends_on:
-      - mysql
+
+  letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: nginx-letsencrypt
+    restart: unless-stopped
+    environment:
+      NGINX_PROXY_CONTAINER: nginx-proxy
+      DEFAULT_EMAIL: tvoj@email.com
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./certs:/etc/nginx/certs
+      - ./vhost.d:/etc/nginx/vhost.d
+      - ./html:/usr/share/nginx/html
+    networks:
+      - portfolio-network
+
+  php:
+    ...
+    environment:
+      - VIRTUAL_HOST=mirzaredzic.hopto.org
+      - LETSENCRYPT_HOST=mirzaredzic.hopto.org
+      - LETSENCRYPT_EMAIL=tvoj@email.com
 
   nginx:
     image: nginx:1.21
     container_name: portfolio-nginx
     restart: unless-stopped
-    ports:
-      - "8443:80"
+    expose:
+      - "80"
     volumes:
       - ./portfolio-laravel:/var/www/laravel
       - ./nginx/conf.d:/etc/nginx/conf.d
     networks:
       - portfolio-network
-    depends_on:
-      - php
+    environment:
+      - VIRTUAL_HOST=mirzaredzic.hopto.org
+      - LETSENCRYPT_HOST=mirzaredzic.hopto.org
+      - LETSENCRYPT_EMAIL=tvoj@email.com
 
-  mysql:
-    image: mysql:8.0
-    container_name: portfolio-mysql
-    restart: unless-stopped
-    environment:
-      MYSQL_DATABASE: portfolio
-      MYSQL_ROOT_PASSWORD: root
-    ports:
-      - "3306:3306"
-    volumes:
-      - mysql-data:/var/lib/mysql
-    networks:
-      - portfolio-network
-      
   nextjs:
-    build:
-      context: ./portfolio-next
-      dockerfile: Dockerfile.next
-    container_name: portfolio-nextjs
-    restart: unless-stopped
-    ports:
-      - "3000:3000"
-    networks:
-      - portfolio-network
+    ...
+    expose:
+      - "3000"
     environment:
-      - NEXT_PUBLIC_API_URL=http://34.76.223.210:8443/api
-      - NEXT_PUBLIC_API_TOKEN=6|U7fyXkbpHn01uQMbuVVhKOj9RsCLlaqTKivcRnwg2f4cdadb
+      - VIRTUAL_HOST=mirzaredzic.hopto.org
+      - LETSENCRYPT_HOST=mirzaredzic.hopto.org
+      - LETSENCRYPT_EMAIL=tvoj@email.com
 
 networks:
   portfolio-network:
