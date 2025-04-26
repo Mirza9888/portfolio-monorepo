@@ -1,23 +1,18 @@
-# Step 1: Build
-FROM node:18-alpine AS builder
+
+FROM node:18-alpine AS runner
 
 WORKDIR /app
 
-COPY package*.json ./
-RUN npm install
+ENV NODE_ENV=production
 
-COPY . .
-RUN npm run build
-
-# Step 2: Run
-FROM node:18-alpine
-
-WORKDIR /app
-
-COPY --from=builder /app ./
-
-RUN npm install --production
+# Kopiraj sve neophodno za pokretanje aplikacije
+COPY --from=builder /app/next.config.js ./
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./package.json
 
 EXPOSE 3000
 
-CMD ["npm", "run", "start"]
+CMD ["npm", "start"]
+

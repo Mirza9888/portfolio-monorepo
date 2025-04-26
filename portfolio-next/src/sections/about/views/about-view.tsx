@@ -179,9 +179,7 @@ export default function AboutView() {
                   }}>
                     College of Medical Sciences Doboj • 2017–2021
                   </Box>
-                  After earning my degree in Physiotherapy and Occupational Therapy, I transitioned into the tech industry where
-                  I found my passion for web development. Since then, I have built complete web solutions using modern technologies like
-                  Laravel and React-based frameworks such as Next.js.
+                 
                 </Typography>
               </Box>
             </Box>
