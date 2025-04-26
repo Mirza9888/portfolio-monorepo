@@ -9,6 +9,7 @@ services:
       - ./portfolio-laravel:/var/www/laravel
       - ./Docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
       - ./Docker/nginx/certs:/etc/nginx/certs
+      - /etc/letsencrypt:/etc/letsencrypt:ro
     depends_on:
       - php
       - mysql
