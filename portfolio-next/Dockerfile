@@ -1,17 +1,4 @@
-# Stage 1: Build
-FROM node:18-alpine AS builder
 
-WORKDIR /app
-
-# Kopiraj package fajlove i instaliraj zavisnosti
-COPY package*.json ./
-RUN npm ci
-
-# Kopiraj sve i izgradi
-COPY . .
-RUN npm run build
-
-# Stage 2: Run
 FROM node:18-alpine AS runner
 
 WORKDIR /app
@@ -28,3 +15,4 @@ COPY --from=builder /app/package.json ./package.json
 EXPOSE 3000
 
 CMD ["npm", "start"]
+
