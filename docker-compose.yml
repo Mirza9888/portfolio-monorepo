@@ -1,71 +1,69 @@
-version: '3'
-
 services:
-  nginx-proxy:
-    image: jwilder/nginx-proxy
-    container_name: nginx-proxy
-    restart: unless-stopped
+  nginx:
+    image: nginx:alpine
+    container_name: portfolio_nginx
     ports:
       - "80:80"
-      - "443:443"
-    volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-      - ./certs:/etc/nginx/certs
-      - ./vhost.d:/etc/nginx/vhost.d
-      - ./html:/usr/share/nginx/html
-    networks:
-      - portfolio-network
-
-  letsencrypt:
-    image: jrcs/letsencrypt-nginx-proxy-companion
-    container_name: nginx-letsencrypt
-    restart: unless-stopped
-    environment:
-      NGINX_PROXY_CONTAINER: nginx-proxy
-      DEFAULT_EMAIL: tvoj@email.com
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./certs:/etc/nginx/certs
-      - ./vhost.d:/etc/nginx/vhost.d
-      - ./html:/usr/share/nginx/html
-    networks:
-      - portfolio-network
-
-  php:
-    ...
-    environment:
-      - VIRTUAL_HOST=mirzaredzic.hopto.org
-      - LETSENCRYPT_HOST=mirzaredzic.hopto.org
-      - LETSENCRYPT_EMAIL=tvoj@email.com
-
-  nginx:
-    image: nginx:1.21
-    container_name: portfolio-nginx
-    restart: unless-stopped
-    expose:
-      - "80"
+      - "8443:8443"
     volumes:
       - ./portfolio-laravel:/var/www/laravel
-      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./Docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+      - mysql
+      - nextjs
     networks:
-      - portfolio-network
+      - portfolio_network
+
+  php:
+    build:
+      context: ./Docker/php8.3
+      dockerfile: Dockerfile
+    container_name: portfolio_php
+    volumes:
+      - ./portfolio-laravel:/var/www/laravel
+      - ./Docker/php8.3/custom-php.ini:/usr/local/etc/php/conf.d/custom-php.ini
+    networks:
+      - portfolio_network
+
+
+  mysql:
+    image: mysql:8.0
+    container_name: portfolio_mysql
+    ports:
+      - "3306:3306"
     environment:
-      - VIRTUAL_HOST=mirzaredzic.hopto.org
-      - LETSENCRYPT_HOST=mirzaredzic.hopto.org
-      - LETSENCRYPT_EMAIL=tvoj@email.com
+      MYSQL_DATABASE: portfolio
+      MYSQL_ROOT_PASSWORD: root
+      TZ: Europe/Sarajevo
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./Docker/mysql/my.cnf:/etc/mysql/my.cnf
+    command:
+      - --default-authentication-plugin=mysql_native_password
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    networks:
+      - portfolio_network
+     
 
   nextjs:
-    ...
-    expose:
-      - "3000"
+    build:
+      context: ./portfolio-next
+      dockerfile: Dockerfile
+    container_name: portfolio_nextjs
     environment:
-      - VIRTUAL_HOST=mirzaredzic.hopto.org
-      - LETSENCRYPT_HOST=mirzaredzic.hopto.org
-      - LETSENCRYPT_EMAIL=tvoj@email.com
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=http://mirzaredzic.hopto.org/api
+    volumes:
+      - ./portfolio-next:/app
+      - /app/node_modules
+    networks:
+      - portfolio_network
 
 networks:
-  portfolio-network:
+  portfolio_network:
     driver: bridge
 
 volumes:
-  mysql-data:
+  mysql_data:
