@@ -1,19 +1,24 @@
+# Stage 1: Build
 FROM node:18-alpine AS builder
 
 WORKDIR /app
 
+# Kopiraj package fajlove i instaliraj zavisnosti
 COPY package*.json ./
 RUN npm ci
 
+# Kopiraj sve i izgradi
 COPY . .
 RUN npm run build
 
+# Stage 2: Run
 FROM node:18-alpine AS runner
 
 WORKDIR /app
 
 ENV NODE_ENV=production
 
+# Kopiraj sve neophodno za pokretanje aplikacije
 COPY --from=builder /app/next.config.js ./
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next ./.next

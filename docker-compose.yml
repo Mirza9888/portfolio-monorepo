@@ -56,8 +56,9 @@ services:
       - NODE_ENV=development
       - NEXT_PUBLIC_API_URL=http://mirzaredzic.hopto.org/api
     volumes:
-      - ./portfolio-next:/app
-      - /app/node_modules
+     - ./portfolio-next:/app:cached
+     - /app/.next 
+     - /app/node_modules
     networks:
       - portfolio_network
 
