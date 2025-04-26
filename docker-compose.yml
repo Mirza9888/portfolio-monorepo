@@ -15,6 +15,7 @@ services:
       - nextjs
     networks:
       - portfolio_network
+      
 
   php:
     build:
