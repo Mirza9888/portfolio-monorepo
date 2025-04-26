@@ -19,7 +19,7 @@ services:
 
   php:
     build:
-      context: ./Docker/php8.3
+      context: ./portfolio-laravel
       dockerfile: Dockerfile
     container_name: portfolio_php
     volumes:
