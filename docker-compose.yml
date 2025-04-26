@@ -54,10 +54,10 @@ services:
       - NEXT_PUBLIC_API_URL=https://mirzaredzic.hopto.org/api
     volumes:
       - ./portfolio-next:/app
+      - ./portfolio-next/out:/app/out  # Osigurava da out direktorij perzistira
     networks:
       - portfolio_network
-    command: |
-      sh -c "npm ci && npm run build && npm run export && sleep infinity"
+    command: sh -c "npm ci && npm run build && npm run export && echo 'Next.js build completed' && tail -f /dev/null"
 
 networks:
   portfolio_network:
