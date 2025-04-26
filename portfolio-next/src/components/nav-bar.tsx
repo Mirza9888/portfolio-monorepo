@@ -16,6 +16,13 @@ import MenuItem from '@mui/material/MenuItem';
 import IconButton from '@mui/material/IconButton';
 import { useTheme } from '@mui/material/styles';
 import { useAuth } from '@/context/AuthContext';
+import MenuIcon from '@mui/icons-material/Menu';
+import Drawer from '@mui/material/Drawer';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 function HideOnScroll(props: { children: React.ReactElement }) {
   const { children } = props;
@@ -32,7 +39,9 @@ export default function Navbar() {
   const { user, logout } = useAuth();
   const router = useRouter();
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const handleLogout = () => {
     document.cookie = 'token=; Max-Age=0; path=/';
@@ -40,6 +49,112 @@ export default function Navbar() {
     setAnchorEl(null);
     router.push('/login');
   };
+
+  const toggleDrawer = (open: boolean) => () => {
+    setDrawerOpen(open);
+  };
+
+  const navItems = [
+    { text: 'About Me', href: '/about', icon: '/icons/assistance.png' },
+    { text: 'Content', href: '/content', icon: '/icons/responsive.png' },
+    { text: 'Experience', href: '/experience', icon: '/icons/24-hours.png' },
+    { text: 'Contact', href: '/contact', icon: '/icons/telephone.png' },
+  ];
+
+  const mobileDrawerList = (
+    <Box 
+      sx={{ width: 250 }} 
+      role="presentation" 
+      onClick={toggleDrawer(false)}
+      onKeyDown={toggleDrawer(false)}
+    >
+      <List sx={{ pt: 2 }}>
+        {navItems.map((item) => (
+          <ListItem 
+            button 
+            component={Link} 
+            href={item.href} 
+            key={item.text}
+            sx={{
+              my: 1,
+              mx: 1,
+              borderRadius: 1,
+              '&:hover': {
+                backgroundColor: 'rgba(33, 150, 243, 0.08)',
+              }
+            }}
+          >
+            <ListItemIcon>
+              <img
+                src={item.icon}
+                alt={item.text}
+                style={{
+                  width: 22,
+                  height: 22,
+                  filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))'
+                }}
+              />
+            </ListItemIcon>
+            <ListItemText primary={item.text} />
+          </ListItem>
+        ))}
+        {user ? (
+          <ListItem 
+            button 
+            onClick={handleLogout}
+            sx={{
+              my: 1,
+              mx: 1,
+              borderRadius: 1,
+              '&:hover': {
+                backgroundColor: 'rgba(33, 150, 243, 0.08)',
+              }
+            }}
+          >
+            <ListItemIcon>
+              <img
+                src="/icons/house.png"
+                alt="Logout"
+                style={{
+                  width: 22,
+                  height: 22,
+                  filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))'
+                }}
+              />
+            </ListItemIcon>
+            <ListItemText primary="Logout" />
+          </ListItem>
+        ) : (
+          <ListItem 
+            button 
+            component={Link} 
+            href="/login"
+            sx={{
+              my: 1,
+              mx: 1,
+              borderRadius: 1,
+              '&:hover': {
+                backgroundColor: 'rgba(33, 150, 243, 0.08)',
+              }
+            }}
+          >
+            <ListItemIcon>
+              <img
+                src="/icons/house.png"
+                alt="Login"
+                style={{
+                  width: 22,
+                  height: 22,
+                  filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))'
+                }}
+              />
+            </ListItemIcon>
+            <ListItemText primary="Login" />
+          </ListItem>
+        )}
+      </List>
+    </Box>
+  );
 
   return (
     <HideOnScroll>
@@ -54,124 +169,71 @@ export default function Navbar() {
       >
         <Container maxWidth="lg">
           <Toolbar disableGutters sx={{ justifyContent: 'space-between', height: '70px' }}>
-            <Box sx={{ width: '120px' }} />
-            
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-              <Button 
-                component={Link} 
-                href="/about" 
-                sx={{ 
-                  mx: 2, 
-                  color: theme.palette.text.primary,
-                  fontWeight: 500,
-                  borderRadius: theme.shape.borderRadius,
-                  transition: 'all 0.2s ease-in-out',
-                  '&:hover': {
-                    backgroundColor: 'rgba(33, 150, 243, 0.08)',
-                    transform: 'translateY(-2px)'
-                  }
-                }}
-                startIcon={
-                  <img 
-                    src="/icons/assistance.png" 
-                    alt="About" 
-                    style={{ 
-                      width: 22, 
-                      height: 22, 
-                      filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))'
-                    }} 
-                  />
-                }
-              >
-                About Me
-              </Button>
-              <Button 
-                component={Link} 
-                href="/content" 
-                sx={{ 
-                  mx: 2, 
-                  color: theme.palette.text.primary,
-                  fontWeight: 500,
-                  borderRadius: theme.shape.borderRadius,
-                  transition: 'all 0.2s ease-in-out',
-                  '&:hover': {
-                    backgroundColor: 'rgba(33, 150, 243, 0.08)',
-                    transform: 'translateY(-2px)'
-                  }
-                }}
-                startIcon={
-                  <img 
-                    src="/icons/responsive.png" 
-                    alt="Content" 
-                    style={{ 
-                      width: 22, 
-                      height: 22, 
-                      filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))'
-                    }} 
-                  />
-                }
-              >
-                Content
-              </Button>
-              <Button 
-                component={Link} 
-                href="/experience" 
-                sx={{ 
-                  mx: 2, 
-                  color: theme.palette.text.primary,
-                  fontWeight: 500,
-                  borderRadius: theme.shape.borderRadius,
-                  transition: 'all 0.2s ease-in-out',
-                  '&:hover': {
-                    backgroundColor: 'rgba(33, 150, 243, 0.08)',
-                    transform: 'translateY(-2px)'
-                  }
-                }}
-                startIcon={
-                  <img 
-                    src="/icons/24-hours.png" 
-                    alt="Experience" 
-                    style={{ 
-                      width: 22, 
-                      height: 22, 
-                      filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))'
-                    }} 
-                  />
-                }
-              >
-                Experience
-              </Button>
-              <Button 
-                component={Link} 
-                href="/contact" 
-                sx={{ 
-                  mx: 2, 
-                  color: theme.palette.text.primary,
-                  fontWeight: 500,
-                  borderRadius: theme.shape.borderRadius,
-                  transition: 'all 0.2s ease-in-out',
-                  '&:hover': {
-                    backgroundColor: 'rgba(33, 150, 243, 0.08)',
-                    transform: 'translateY(-2px)'
-                  }
-                }}
-                startIcon={
-                  <img 
-                    src="/icons/telephone.png" 
-                    alt="Contact" 
-                    style={{ 
-                      width: 22, 
-                      height: 22, 
-                      filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))'
-                    }} 
-                  />
-                }
-              >
-                Contact
-              </Button>
+            {/* Left side - Logo or Brand placeholder */}
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              {isMobile && (
+                <IconButton
+                  color="inherit"
+                  aria-label="open drawer"
+                  edge="start"
+                  onClick={toggleDrawer(true)}
+                  sx={{ 
+                    mr: 2, 
+                    color: theme.palette.text.primary,
+                    '&:hover': {
+                      backgroundColor: 'rgba(33, 150, 243, 0.08)',
+                    }
+                  }}
+                >
+                  <MenuIcon />
+                </IconButton>
+              )}
+              <Box sx={{ width: isMobile ? '50px' : '120px' }} />
             </Box>
+            
+            {/* Middle - Navigation links only shown on desktop */}
+            {!isMobile && (
+              <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                {navItems.map((item) => (
+                  <Button 
+                    key={item.text}
+                    component={Link} 
+                    href={item.href} 
+                    sx={{ 
+                      mx: { xs: 0.5, sm: 1, md: 2 }, 
+                      color: theme.palette.text.primary,
+                      fontWeight: 500,
+                      borderRadius: theme.shape.borderRadius,
+                      transition: 'all 0.2s ease-in-out',
+                      '&:hover': {
+                        backgroundColor: 'rgba(33, 150, 243, 0.08)',
+                        transform: 'translateY(-2px)'
+                      }
+                    }}
+                    startIcon={
+                      <img 
+                        src={item.icon}
+                        alt={item.text} 
+                        style={{ 
+                          width: 22, 
+                          height: 22, 
+                          filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))'
+                        }} 
+                      />
+                    }
+                  >
+                    {item.text}
+                  </Button>
+                ))}
+              </Box>
+            )}
 
-            <Box sx={{ width: '120px', display: 'flex', justifyContent: 'flex-end' }}>
+            {/* Right side - User avatar or login button */}
+            <Box sx={{ 
+              width: isMobile ? '50px' : '120px', 
+              display: 'flex', 
+              justifyContent: 'flex-end'
+            }}>
               {user ? (
                 <>
                   <IconButton 
@@ -229,37 +291,48 @@ export default function Navbar() {
                   </Menu>
                 </>
               ) : (
-                <Button 
-                  component={Link} 
-                  href="/login"
-                  startIcon={
-                    <img 
-                      src="/icons/house.png" 
-                      alt="Login" 
-                      style={{ 
-                        width: 20, 
-                        height: 20,
-                        filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))'
-                      }} 
-                    />
-                  }
-                  sx={{ 
-                    color: theme.palette.text.primary,
-                    fontWeight: 500,
-                    borderRadius: theme.shape.borderRadius,
-                    transition: 'all 0.2s ease-in-out',
-                    '&:hover': {
-                      backgroundColor: 'rgba(33, 150, 243, 0.08)',
-                      transform: 'translateY(-2px)'
+                !isMobile && (
+                  <Button 
+                    component={Link} 
+                    href="/login"
+                    startIcon={
+                      <img 
+                        src="/icons/house.png" 
+                        alt="Login" 
+                        style={{ 
+                          width: 20, 
+                          height: 20,
+                          filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))'
+                        }} 
+                      />
                     }
-                  }}
-                >
-                  Login
-                </Button>
+                    sx={{ 
+                      color: theme.palette.text.primary,
+                      fontWeight: 500,
+                      borderRadius: theme.shape.borderRadius,
+                      transition: 'all 0.2s ease-in-out',
+                      '&:hover': {
+                        backgroundColor: 'rgba(33, 150, 243, 0.08)',
+                        transform: 'translateY(-2px)'
+                      }
+                    }}
+                  >
+                    Login
+                  </Button>
+                )
               )}
             </Box>
           </Toolbar>
         </Container>
+
+        {/* Mobile Drawer */}
+        <Drawer
+          anchor="left"
+          open={drawerOpen}
+          onClose={toggleDrawer(false)}
+        >
+          {mobileDrawerList}
+        </Drawer>
       </AppBar>
     </HideOnScroll>
   );
