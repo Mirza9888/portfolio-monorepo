@@ -3,6 +3,7 @@ services:
     image: nginx:alpine
     container_name: portfolio_nginx
     ports:
+
       - "80:80"
       - "443:443"
     volumes:
@@ -30,6 +31,9 @@ services:
   mysql:
     image: mysql:8.0
     container_name: portfolio_mysql
+    ports:
+      - "3307:3306"
+
     environment:
       MYSQL_DATABASE: portfolio
       MYSQL_ROOT_PASSWORD: root
@@ -51,6 +55,7 @@ services:
     container_name: portfolio_nextjs
     environment:
       - NODE_ENV=production
+
       - NEXT_PUBLIC_API_URL=https://mirzaredzic.hopto.org/api
     volumes:
       - ./portfolio-next:/app
