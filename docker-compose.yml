@@ -3,7 +3,7 @@ services:
     image: nginx:alpine
     container_name: portfolio_nginx
     ports:
-      - "80:80"
+      - "8080:80"
       - "8443:8443"
     volumes:
       - ./portfolio-laravel:/var/www/laravel
