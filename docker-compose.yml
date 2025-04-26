@@ -54,7 +54,7 @@ services:
     container_name: portfolio_nextjs
     environment:
       - NODE_ENV=production
-      - NEXT_PUBLIC_API_URL=http://mirzaredzic.hopto.org/api
+      -NEXT_PUBLIC_API_URL=http://mirzaredzic.hopto.org:8080/api
     volumes:
      - ./portfolio-next:/app:cached
      - /app/.next 
