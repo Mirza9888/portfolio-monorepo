@@ -53,7 +53,7 @@ services:
       dockerfile: Dockerfile
     container_name: portfolio_nextjs
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=production
       - NEXT_PUBLIC_API_URL=http://mirzaredzic.hopto.org/api
     volumes:
      - ./portfolio-next:/app:cached
