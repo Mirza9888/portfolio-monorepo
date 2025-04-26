@@ -3,17 +3,16 @@ services:
     image: nginx:alpine
     container_name: portfolio_nginx
     ports:
-
       - "80:80"
       - "443:443"
     volumes:
       - ./portfolio-laravel:/var/www/laravel
-      - ./portfolio-next/out:/var/www/next # serve buildani Next.js
       - ./Docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
-      - ./Docker/nginx/certs:/etc/nginx/certs # ovde certifikati
+      - ./Docker/nginx/certs:/etc/nginx/certs
     depends_on:
       - php
       - mysql
+      - nextjs
     networks:
       - portfolio_network
 
@@ -33,7 +32,6 @@ services:
     container_name: portfolio_mysql
     ports:
       - "3307:3306"
-
     environment:
       MYSQL_DATABASE: portfolio
       MYSQL_ROOT_PASSWORD: root
@@ -55,14 +53,11 @@ services:
     container_name: portfolio_nextjs
     environment:
       - NODE_ENV=production
-
       - NEXT_PUBLIC_API_URL=https://mirzaredzic.hopto.org/api
-    volumes:
-      - ./portfolio-next:/app
-      - ./portfolio-next/out:/app/out  # Osigurava da out direktorij perzistira
     networks:
       - portfolio_network
-    command: sh -c "npm ci && npm run build && echo 'Next.js build completed' && tail -f /dev/null"
+    expose:
+      - "3000" # expose interno 3000 port, nginx ce mu pristupiti preko docker networka
 
 networks:
   portfolio_network:
