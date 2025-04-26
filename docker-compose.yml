@@ -55,7 +55,7 @@ services:
     container_name: portfolio_nextjs
     environment:
       - NODE_ENV=production
-      - NEXT_PUBLIC_API_URL=https://mirzaredzic.hopto.org
+      - NEXT_PUBLIC_API_URL=https://mirzaredzic.hopto.org/api
     networks:
       - portfolio_network
     expose:
