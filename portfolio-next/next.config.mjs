@@ -5,7 +5,7 @@ export default {
         return [
             {
                 source: '/api/:path*',
-                destination: 'http://portfolio:8443/api/:path*'
+                destination: 'http://mirzaredzic.hopto.org/api/:path*'
             }
         ]
     }
