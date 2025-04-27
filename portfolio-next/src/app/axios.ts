@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Kreiramo instancu axios-a sa osnovnom konfiguracijom
 const axiosInstance = axios.create({
-  baseURL: 'http://portfolio:8443/',  // Ovde postavite osnovni URL API-ja
+  baseURL: 'https://mirzaredzic.hopto.org/api/',  // Ovde postavite osnovni URL API-ja
   timeout: 10000,  // Tajmer za timeout (10 sekundi u ovom primeru)
   headers: {
     'Content-Type': 'application/json',
