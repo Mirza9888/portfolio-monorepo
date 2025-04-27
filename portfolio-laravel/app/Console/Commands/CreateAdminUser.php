@@ -14,6 +14,14 @@ class CreateAdminUser extends Command
     public function handle()
     {
         try {
+            // Provjeriti da li korisnik već postoji
+            $existingUser = User::where('email', $this->argument('email'))->first();
+            
+            if ($existingUser) {
+                $this->info('Admin user already exists.');
+                return;
+            }
+            
             $user = User::create([
                 'name' => 'Mirza',
                 'email' => $this->argument('email'),
