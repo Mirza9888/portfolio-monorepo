@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://mirzaredzic.hopto.org/api',
+    baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://mirzaredzic.hopto.org',
   headers: {
     'Accept': 'application/json',
     Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
