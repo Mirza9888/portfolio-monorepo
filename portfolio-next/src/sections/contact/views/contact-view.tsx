@@ -97,25 +97,6 @@ export default function ContactView() {
                 </Typography>
               </Box>
 
-              {/* Slika između imena i kontakta */}
-              <Box
-                sx={{
-                  mb: 4, // Dodajte razmak između slike i kontakta
-                }}
-              >
-                <img 
-                  src="https://mirzaredzic.hopto.org/icons/zaportfolio.png"
-                  alt="Mirza Redžić"
-                  style={{
-                    width: '150px',
-                    height: '150px',
-                    borderRadius: '50%',
-                    objectFit: 'cover',
-                    border: `4px solid ${theme.palette.primary.main}`,
-                  }}
-                />
-              </Box>
-
               <Grid container spacing={4} sx={{ mt: 2 }}> 
                 <Grid item xs={12} sm={4}>
                   <Box 
@@ -259,7 +240,7 @@ export default function ContactView() {
                       sx={{ 
                         color: '#0a66c2', 
                         fontWeight: 500,
-                        fontSize: '1.05rem' 
+                        fontSize: '1.05rem' // Increased font size
                       }}
                     >
                       View Profile
