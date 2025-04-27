@@ -3,7 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Artisan;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class AdminUserSeeder extends Seeder
 {
@@ -14,18 +15,31 @@ class AdminUserSeeder extends Seeder
      */
     public function run()
     {
-       
-        $email = env('ADMIN_EMAIL');
-        $password = env('ADMIN_PASSWORD');
+        $email = 'redzacs@gmail.com';
+        $password = 'test1234';
         
-        $this->command->info('Creating admin user...');
+        $this->command->info('Creating admin user directly from seeder...');
         
-        Artisan::call('admin:create', [
-            'email' => $email,
-            'password' => $password
-        ]);
-        
-      
-        $this->command->info(Artisan::output());
+        try {
+            // Provera da li korisnik već postoji
+            $existingUser = User::where('email', $email)->first();
+            
+            if ($existingUser) {
+                $this->command->info('Admin user already exists.');
+                return;
+            }
+            
+            // Direktno kreiranje korisnika iz seedera
+            $user = User::create([
+                'name' => 'Mirza',
+                'email' => $email,
+                'password' => Hash::make($password)
+            ]);
+
+            $this->command->info('Admin user created successfully');
+            $this->command->info("Email: {$user->email}");
+        } catch (\Exception $e) {
+            $this->command->error('Error creating admin user: ' . $e->getMessage());
+        }
     }
 }
