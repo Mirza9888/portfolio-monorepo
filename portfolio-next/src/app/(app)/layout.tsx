@@ -10,8 +10,8 @@ export const metadata: Metadata = {
   title: "Portfolio",
   description: "Portfolio - Mirza Redzic",
   icons: {
-    icon: "/icons/ikona.png",
-  },
+    icon: "https://mirzaredzic.hopto.org/icons/ikona.png",
+  }
 };
 
 export default function RootLayout({
