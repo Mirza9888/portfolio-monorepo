@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'https://mirzaredzic.hopto.org/l'),
+    'url' => env('APP_URL', 'https://mirzaredzic.hopto.org/'),
 
     /*
     |--------------------------------------------------------------------------
