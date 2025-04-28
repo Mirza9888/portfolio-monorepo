@@ -39,8 +39,9 @@ class ContentService
             'title' => $validatedData['title'],
             'description' => $validatedData['description'],
             'technologies' => $technologies ? json_encode($technologies) : null,
-            'image' => $imagePaths[0] ?? null,
-            'images' => count($imagePaths) ? json_encode($imagePaths) : null,
+           'image_url' => $this->image ? Storage::url($this->image) : null,
+'images' => is_array($this->images) ? array_map(fn($img) => asset('storage/' . $img), json_decode($this->images, true)) : [],
+
         ]);
     }
 
