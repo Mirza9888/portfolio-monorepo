@@ -1,16 +1,35 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createContent as apiCreateContent } from '../api/content';
+import { createContent, updateContent, deleteContent } from '../api/content';
 import type { Content } from '../types/content'; // ili gde god da ti je definisan `Content`
 
 export const useContentMutation = () => {
   const queryClient = useQueryClient();
 
-  const createContent = useMutation<unknown, unknown, Content>({
-    mutationFn: (formData) => apiCreateContent(formData),
+  const createContentMutation = useMutation({
+    mutationFn: createContent,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['contents'] });
-    }
+    },
   });
 
-  return { createContent };
+  const updateContentMutation = useMutation({
+    mutationFn: ({ id, formData }: { id: number | string; formData: FormData }) =>
+      updateContent(id, formData),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['contents'] });
+    },
+  });
+
+  const deleteContentMutation = useMutation({
+    mutationFn: deleteContent,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['contents'] });
+    },
+  });
+
+  return {
+    createContent: createContentMutation,
+    updateContent: updateContentMutation,
+    deleteContent: deleteContentMutation,
+  };
 };
