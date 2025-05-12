@@ -32,4 +32,4 @@ docker-compose -f docker-compose.prod.yml exec php php artisan migrate --force
 docker-compose -f docker-compose.prod.yml exec php php artisan storage:link
 
 echo "✅ Deployment completed successfully!"
-echo "🌐 Your application should now be running at https://mirzaredzic.hopto.org" 
+echo "🌐 Your application should now be running at https://mirzaredzic.duckdns.org" 
