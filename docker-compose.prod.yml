@@ -5,7 +5,7 @@ services:
       - "80:80"
     volumes:
       - ./Docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
-      - ./laravel:/var/www/laravel
+      - ./portfolio-laravel:/var/www/laravel
     depends_on:
       - php
       - nextjs
@@ -15,10 +15,10 @@ services:
 
   php:
     build:
-      context: ./laravel
+      context: ./portfolio-laravel
       dockerfile: Dockerfile
     volumes:
-      - ./laravel:/var/www/laravel
+      - ./portfolio-laravel:/var/www/laravel
     environment:
       - APP_ENV=production
       - APP_DEBUG=false
