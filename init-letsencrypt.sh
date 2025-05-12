@@ -7,6 +7,10 @@ staging=0 # Set to 1 if you're testing your setup to avoid hitting request limit
 data_path="./certbot"
 rsa_key_size=4096
 
+# Create required directories with proper permissions
+mkdir -p "$data_path/conf/live/$domains"
+chmod -R 755 "$data_path"
+
 if [ -d "$data_path" ]; then
   read -p "Existing data found for $domains. Continue and replace existing certificate? (y/N) " decision
   if [ "$decision" != "Y" ] && [ "$decision" != "y" ]; then
@@ -24,7 +28,6 @@ fi
 
 echo "### Creating dummy certificate for $domains ..."
 path="/etc/letsencrypt/live/$domains"
-mkdir -p "$data_path/conf/live/$domains"
 docker-compose run --rm --entrypoint "\
   openssl req -x509 -nodes -newkey rsa:$rsa_key_size -days 1\
     -keyout '$path/privkey.pem' \
@@ -35,6 +38,9 @@ echo
 echo "### Starting nginx ..."
 docker-compose up --force-recreate -d nginx
 echo
+
+echo "### Waiting for nginx to start..."
+sleep 5
 
 echo "### Deleting dummy certificate for $domains ..."
 docker-compose run --rm --entrypoint "\
@@ -66,7 +72,8 @@ docker-compose run --rm --entrypoint "\
     $domain_args \
     --rsa-key-size $rsa_key_size \
     --agree-tos \
-    --force-renewal" certbot
+    --force-renewal \
+    --preferred-challenges http" certbot
 echo
 
 echo "### Reloading nginx ..."
