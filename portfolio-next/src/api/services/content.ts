@@ -5,7 +5,7 @@ import { API_PATHS } from '../path';
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 // API Function
-const createContentApi = async (formData: any): Promise<any> => {
+const createContentApi = async (formData: FormData): Promise<any> => {
   const response = await axios.post(`${API_URL}${API_PATHS.CONTENTS}`, formData, {
     headers: {
       'Accept': 'application/json',
@@ -21,9 +21,10 @@ export const useContentMutation = () => {
     console.log('useContentMutation hook called');
     const queryClient = useQueryClient();
   
-    const mutation = useMutation(createContentApi, {
+    const mutation = useMutation({
+      mutationFn: createContentApi,
       onSuccess: () => {
-        queryClient.invalidateQueries(['contents']);
+        queryClient.invalidateQueries({ queryKey: ['contents'] });
       },
       onError: (error) => {
         console.error('Error creating content:', error);
