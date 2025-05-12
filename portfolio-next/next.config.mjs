@@ -6,6 +6,10 @@ export default {
             {
                 source: '/api/:path*',
                 destination: 'http://mirzaredzic.duckdns.org/api/:path*'
+            },
+            {
+                source: '/contents',
+                destination: 'http://mirzaredzic.duckdns.org/api/contents'
             }
         ]
     }
