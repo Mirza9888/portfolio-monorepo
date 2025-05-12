@@ -1,7 +1,7 @@
 #!/bin/bash
 
 domains=(mirzaredzic.duckdns.org)
-email="your-email@example.com" # Adding a valid address is strongly recommended
+email="mirzaredzic9@gmail.com" # Update with your email
 staging=0 # Set to 1 if you're testing your setup to avoid hitting request limits
 
 data_path="./certbot"
