@@ -10,6 +10,10 @@ export default {
             {
                 source: '/contents',
                 destination: 'http://mirzaredzic.duckdns.org/api/contents'
+            },
+            {
+                source: '/login',
+                destination: 'http://mirzaredzic.duckdns.org/api/login'
             }
         ]
     }
