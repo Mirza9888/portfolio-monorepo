@@ -2,6 +2,16 @@ import axios from 'axios';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://portfolio:8443/api';
 
+// Helper function to get cookie value
+const getCookie = (name: string): string | undefined => {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) {
+    return parts.pop()?.split(';').shift();
+  }
+  return undefined;
+};
+
 const api = axios.create({
     baseURL: API_URL,
     timeout: 10000,
@@ -15,7 +25,7 @@ const api = axios.create({
 // Request interceptor
 api.interceptors.request.use(
     (config) => {
-        const token = localStorage.getItem('token');
+        const token = getCookie('token');
         if (token && config.headers) {
             config.headers.Authorization = `Bearer ${token}`;
         }
@@ -32,7 +42,7 @@ api.interceptors.response.use(
     (error) => {
         if (error.response?.status === 401) {
             // Handle unauthorized access
-            localStorage.removeItem('token');
+            document.cookie = 'token=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/';
             window.location.href = '/login';
         }
         return Promise.reject(error);
