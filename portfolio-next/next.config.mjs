@@ -5,15 +5,15 @@ export default {
         return [
             {
                 source: '/api/:path*',
-                destination: 'http://mirzaredzic.duckdns.org/api/:path*'
+                destination: 'https://mirzaredzic.duckdns.org/api/:path*'
             },
             {
                 source: '/contents',
-                destination: 'http://mirzaredzic.duckdns.org/api/contents'
+                destination: 'https://mirzaredzic.duckdns.org/api/contents'
             },
             {
                 source: '/login',
-                destination: 'http://mirzaredzic.duckdns.org/api/login'
+                destination: 'https://mirzaredzic.duckdns.org/api/login'
             }
         ]
     }
