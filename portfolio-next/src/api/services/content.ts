@@ -21,9 +21,10 @@ export const useContentMutation = () => {
     console.log('useContentMutation hook called');
     const queryClient = useQueryClient();
   
-    const mutation = useMutation(createContentApi, {
+    const mutation = useMutation({
+      mutationFn: createContentApi,
       onSuccess: () => {
-        queryClient.invalidateQueries(['contents']);
+        queryClient.invalidateQueries({ queryKey: ['contents'] });
       },
       onError: (error) => {
         console.error('Error creating content:', error);
