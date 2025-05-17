@@ -1,5 +1,6 @@
 // next.config.js
 export default {
+    output: 'standalone',
     transpilePackages: ['@mui/material', '@mui/system', '@mui/icons-material'],
     async rewrites() {
         return [
