@@ -128,130 +128,132 @@ export default function Navbar() {
 
   return (
     <HideOnScroll>
-      <AppBar 
-        position="fixed" 
-        elevation={0} 
-        sx={{ 
-          backgroundColor: 'white',
-          boxShadow: '0 1px 8px rgba(0, 0, 0, 0.08)',
-          borderBottom: '1px solid rgba(0, 0, 0, 0.06)'
-        }}
-      >
-        <Container maxWidth="lg">
-          <Toolbar disableGutters sx={{ justifyContent: 'space-between', height: '70px' }}>
-            <Box sx={{ width: { xs: 'auto', md: '120px' } }} />
-            
-            {!isMobile ? (
-              <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                {navItems.map((item) => (
-                  <Button 
-                    key={item.text}
-                    component={Link} 
-                    href={item.href} 
-                    sx={{ 
-                      mx: 2, 
-                      color: theme.palette.text.primary,
-                      fontWeight: 500,
-                      borderRadius: theme.shape.borderRadius,
-                      transition: 'all 0.2s ease-in-out',
-                      '&:hover': {
-                        backgroundColor: 'rgba(33, 150, 243, 0.08)',
-                        transform: 'translateY(-2px)'
-                      }
-                    }}
-                    startIcon={
-                      <img 
-                        src={item.icon} 
-                        alt={item.text} 
-                        style={{ 
-                          width: 22, 
-                          height: 22, 
-                          filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))'
-                        }} 
-                      />
-                    }
-                  >
-                    {item.text}
-                  </Button>
-                ))}
-              </Box>
-            ) : (
-              <IconButton
-                onClick={() => setMobileMenuOpen(true)}
-                sx={{
-                  color: theme.palette.text.primary,
-                  '&:hover': {
-                    backgroundColor: 'rgba(33, 150, 243, 0.08)',
-                  },
-                }}
-              >
-                <MenuIcon />
-              </IconButton>
-            )}
-
-            <Box sx={{ width: { xs: 'auto', md: '120px' }, display: 'flex', justifyContent: 'flex-end' }}>
-              {user && !isMobile ? (
-                <>
-                  <IconButton 
-                    onClick={(e) => setAnchorEl(e.currentTarget)} 
-                    sx={{ 
-                      p: 0.5,
-                      border: '2px solid rgba(33, 150, 243, 0.2)',
-                      transition: 'all 0.2s ease-in-out',
-                      '&:hover': {
-                        backgroundColor: 'rgba(33, 150, 243, 0.05)',
-                        transform: 'scale(1.05)'
-                      }
-                    }}
-                  >
-                    <Avatar 
-                      alt={user.name || 'User Avatar'} 
-                      src={`/static/images/avatar/${user.avatarId || 1}.jpg`}
-                      sx={{
-                        width: 36,
-                        height: 36,
-                        boxShadow: '0 1px 4px rgba(0, 0, 0, 0.1)'
-                      }}
-                    />
-                  </IconButton>
-                  <Menu
-                    anchorEl={anchorEl}
-                    open={Boolean(anchorEl)}
-                    onClose={() => setAnchorEl(null)}
-                    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                    transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-                    PaperProps={{
-                      sx: {
-                        mt: 1.5,
-                        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
+      <>
+        <AppBar 
+          position="fixed" 
+          elevation={0} 
+          sx={{ 
+            backgroundColor: 'white',
+            boxShadow: '0 1px 8px rgba(0, 0, 0, 0.08)',
+            borderBottom: '1px solid rgba(0, 0, 0, 0.06)'
+          }}
+        >
+          <Container maxWidth="lg">
+            <Toolbar disableGutters sx={{ justifyContent: 'space-between', height: '70px' }}>
+              <Box sx={{ width: { xs: 'auto', md: '120px' } }} />
+              
+              {!isMobile ? (
+                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                  {navItems.map((item) => (
+                    <Button 
+                      key={item.text}
+                      component={Link} 
+                      href={item.href} 
+                      sx={{ 
+                        mx: 2, 
+                        color: theme.palette.text.primary,
+                        fontWeight: 500,
                         borderRadius: theme.shape.borderRadius,
-                        minWidth: '150px',
-                        border: '1px solid rgba(0, 0, 0, 0.05)'
-                      }
-                    }}
-                  >
-                    <MenuItem 
-                      onClick={handleLogout}
-                      sx={{
-                        borderRadius: '6px',
-                        mx: 0.5,
-                        px: 2,
-                        py: 1,
+                        transition: 'all 0.2s ease-in-out',
                         '&:hover': {
-                          backgroundColor: 'rgba(33, 150, 243, 0.08)'
+                          backgroundColor: 'rgba(33, 150, 243, 0.08)',
+                          transform: 'translateY(-2px)'
+                        }
+                      }}
+                      startIcon={
+                        <img 
+                          src={item.icon} 
+                          alt={item.text} 
+                          style={{ 
+                            width: 22, 
+                            height: 22, 
+                            filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))'
+                          }} 
+                        />
+                      }
+                    >
+                      {item.text}
+                    </Button>
+                  ))}
+                </Box>
+              ) : (
+                <IconButton
+                  onClick={() => setMobileMenuOpen(true)}
+                  sx={{
+                    color: theme.palette.text.primary,
+                    '&:hover': {
+                      backgroundColor: 'rgba(33, 150, 243, 0.08)',
+                    },
+                  }}
+                >
+                  <MenuIcon />
+                </IconButton>
+              )}
+
+              <Box sx={{ width: { xs: 'auto', md: '120px' }, display: 'flex', justifyContent: 'flex-end' }}>
+                {user && !isMobile ? (
+                  <>
+                    <IconButton 
+                      onClick={(e) => setAnchorEl(e.currentTarget)} 
+                      sx={{ 
+                        p: 0.5,
+                        border: '2px solid rgba(33, 150, 243, 0.2)',
+                        transition: 'all 0.2s ease-in-out',
+                        '&:hover': {
+                          backgroundColor: 'rgba(33, 150, 243, 0.05)',
+                          transform: 'scale(1.05)'
                         }
                       }}
                     >
-                      Logout
-                    </MenuItem>
-                  </Menu>
-                </>
-              ) : null}
-            </Box>
-          </Toolbar>
-        </Container>
-      </AppBar>
-      {renderMobileMenu()}
+                      <Avatar 
+                        alt={user.name || 'User Avatar'} 
+                        src={`/static/images/avatar/${user.avatarId || 1}.jpg`}
+                        sx={{
+                          width: 36,
+                          height: 36,
+                          boxShadow: '0 1px 4px rgba(0, 0, 0, 0.1)'
+                        }}
+                      />
+                    </IconButton>
+                    <Menu
+                      anchorEl={anchorEl}
+                      open={Boolean(anchorEl)}
+                      onClose={() => setAnchorEl(null)}
+                      anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                      PaperProps={{
+                        sx: {
+                          mt: 1.5,
+                          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
+                          borderRadius: theme.shape.borderRadius,
+                          minWidth: '150px',
+                          border: '1px solid rgba(0, 0, 0, 0.05)'
+                        }
+                      }}
+                    >
+                      <MenuItem 
+                        onClick={handleLogout}
+                        sx={{
+                          borderRadius: '6px',
+                          mx: 0.5,
+                          px: 2,
+                          py: 1,
+                          '&:hover': {
+                            backgroundColor: 'rgba(33, 150, 243, 0.08)'
+                          }
+                        }}
+                      >
+                        Logout
+                      </MenuItem>
+                    </Menu>
+                  </>
+                ) : null}
+              </Box>
+            </Toolbar>
+          </Container>
+        </AppBar>
+        {renderMobileMenu()}
+      </>
     </HideOnScroll>
   );
 }
