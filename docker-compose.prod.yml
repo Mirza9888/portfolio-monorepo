@@ -47,7 +47,7 @@ services:
     container_name: portfolio-nextjs
     environment:
       - NODE_ENV=production
-      - NEXT_PUBLIC_API_URL=http://mirzaredzic.duckdns.org/api
+      - NEXT_PUBLIC_API_URL=https://mirzaredzic.duckdns.org/api
     networks:
       - portfolio-network
     restart: unless-stopped
