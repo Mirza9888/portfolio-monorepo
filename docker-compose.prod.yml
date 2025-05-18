@@ -17,18 +17,6 @@ services:
       - portfolio-network
     restart: unless-stopped
 
-  certbot:
-    image: certbot/certbot
-    container_name: portfolio-certbot
-    volumes:
-      - ./certbot/conf:/etc/letsencrypt
-      - ./certbot/www:/var/www/certbot
-    networks:
-      - portfolio-network
-    command: certonly --webroot --webroot-path=/var/www/certbot --email mirzaredzic9@gmail.com --agree-tos --no-eff-email -d mirzaredzic.duckdns.org --force-renewal --non-interactive
-    depends_on:
-      - nginx
-
   php:
     build:
       context: .
