@@ -6,19 +6,37 @@ data_path="./certbot"
 email="mirzaredzic9@gmail.com" # Adding a valid address is strongly recommended
 staging=0 # Set to 1 if you're testing your setup to avoid hitting request limits
 
+# Check if certificates exist on host
+if [ -d "/etc/letsencrypt/live/$domains" ]; then
+  echo "### Using existing certificates from /etc/letsencrypt/live/$domains ..."
+  
+  # Create necessary directories
+  mkdir -p "$data_path/conf"
+  
+  # Download recommended TLS parameters if they don't exist
+  if [ ! -e "$data_path/conf/options-ssl-nginx.conf" ] || [ ! -e "$data_path/conf/ssl-dhparams.pem" ]; then
+    echo "### Downloading recommended TLS parameters ..."
+    curl -s https://raw.githubusercontent.com/certbot/certbot/master/certbot-nginx/certbot_nginx/_internal/tls_configs/options-ssl-nginx.conf > "$data_path/conf/options-ssl-nginx.conf"
+    curl -s https://raw.githubusercontent.com/certbot/certbot/master/certbot/certbot/ssl-dhparams.pem > "$data_path/conf/ssl-dhparams.pem"
+    echo
+  fi
+
+  # Start nginx with existing certificates
+  echo "### Starting nginx with existing certificates ..."
+  docker compose -f docker-compose.prod.yml up -d nginx
+  echo
+
+  echo "### Reloading nginx ..."
+  docker compose -f docker-compose.prod.yml exec nginx nginx -s reload
+  exit 0
+fi
+
+# If no existing certificates, proceed with the original flow
 if [ -d "$data_path" ]; then
   read -p "Existing data found for $domains. Continue and replace existing certificate? (y/N) " decision
   if [ "$decision" != "Y" ] && [ "$decision" != "y" ]; then
     exit
   fi
-fi
-
-if [ ! -e "$data_path/conf/options-ssl-nginx.conf" ] || [ ! -e "$data_path/conf/ssl-dhparams.pem" ]; then
-  echo "### Downloading recommended TLS parameters ..."
-  mkdir -p "$data_path/conf"
-  curl -s https://raw.githubusercontent.com/certbot/certbot/master/certbot-nginx/certbot_nginx/_internal/tls_configs/options-ssl-nginx.conf > "$data_path/conf/options-ssl-nginx.conf"
-  curl -s https://raw.githubusercontent.com/certbot/certbot/master/certbot/certbot/ssl-dhparams.pem > "$data_path/conf/ssl-dhparams.pem"
-  echo
 fi
 
 echo "### Creating dummy certificate for $domains ..."
