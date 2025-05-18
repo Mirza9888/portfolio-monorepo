@@ -22,6 +22,7 @@ import ContentList from '../content-list';
 import ContentImageCarousel from '../content-image-carousel';
 import ContentDetails from '../content-details';
 import ContentNotification from '../content-notification';
+import SectionWrapper from '@/components/section-wrapper';
 import { Content } from '@/types/content';
 
 export default function ContentView() {
@@ -85,18 +86,20 @@ export default function ContentView() {
 
   if (isLoading) {
     return (
-      <Container maxWidth="lg" sx={{ py: 4, mt: 15, display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
-        <Box sx={{ textAlign: 'center' }}>
-          <CircularProgress color="primary" />
-          <Typography variant="h6" sx={{ mt: 2 }}>Loading projects...</Typography>
+      <SectionWrapper>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
+          <Box sx={{ textAlign: 'center' }}>
+            <CircularProgress color="primary" />
+            <Typography variant="h6" sx={{ mt: 2 }}>Loading projects...</Typography>
+          </Box>
         </Box>
-      </Container>
+      </SectionWrapper>
     );
   }
 
   if (queryError) {
     return (
-      <Container maxWidth="lg" sx={{ py: 4, mt: 15 }}>
+      <SectionWrapper>
         <Paper elevation={3} sx={{ p: 4, textAlign: 'center', borderRadius: '12px' }}>
           <Typography variant="h5" color="error" gutterBottom>
             Failed to load projects. Please try again later.
@@ -110,7 +113,7 @@ export default function ContentView() {
             Retry
           </Button>
         </Paper>
-      </Container>
+      </SectionWrapper>
     );
   }
 
@@ -118,7 +121,7 @@ export default function ContentView() {
   const projectImages = currentProject.images || [];
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4, mt: 15 }}>
+    <SectionWrapper maxWidth="lg">
       <Paper 
         elevation={3} 
         sx={{ 
@@ -257,6 +260,6 @@ export default function ContentView() {
         severity={notification.severity}
         onClose={handleCloseNotification}
       />
-    </Container>
+    </SectionWrapper>
   );
 }

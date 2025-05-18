@@ -13,6 +13,7 @@ import {
 import FormatQuoteIcon from '@mui/icons-material/FormatQuote';
 import ExperienceSkillSection from '../experience-skill-section';
 import ExperienceCardSection from '../experience-card-section';
+import SectionWrapper from '@/components/section-wrapper';
 
 
 export default function ExperienceView() {
@@ -79,7 +80,7 @@ export default function ExperienceView() {
   ];
 
   return (
-    <Container maxWidth="md" sx={{ py: 4, mt: 15 }}>
+    <SectionWrapper>
       <Paper 
         elevation={3} 
         sx={{ 
@@ -279,6 +280,6 @@ export default function ExperienceView() {
           </Grid>
         </Grid>
       </Paper>
-    </Container>
+    </SectionWrapper>
   );
 }

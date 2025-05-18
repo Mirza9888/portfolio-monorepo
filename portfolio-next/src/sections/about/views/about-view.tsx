@@ -3,29 +3,18 @@
 import {
   Box,
   Typography,
-  Container,
   Grid,
   Paper,
   Divider,
-  useTheme
+  useTheme,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
+import SectionWrapper from '@/components/section-wrapper';
 
 export default function AboutView() {
   const theme = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    return () => setMounted(false);
-  }, []);
-
-  if (!mounted) {
-    return null;
-  }
 
   return (
-    <Container maxWidth="md" sx={{ py: 4, mt: 15 }}>
+    <SectionWrapper>
       <Paper 
         elevation={3} 
         sx={{ 
@@ -199,6 +188,6 @@ export default function AboutView() {
           </Grid>
         </Grid>
       </Paper>
-    </Container>
+    </SectionWrapper>
   );
 }
