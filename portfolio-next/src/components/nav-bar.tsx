@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import AppBar from '@mui/material/AppBar';
@@ -25,28 +25,35 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 
 function HideOnScroll(props: { children: React.ReactElement }) {
   const { children } = props;
-  const trigger = useScrollTrigger({
-    disableHysteresis: true,
-    threshold: 100
-  });
-  const [mounted, setMounted] = React.useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const [shouldHide, setShouldHide] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setMounted(true);
-    return () => {
-      setMounted(false);
-    };
+    return () => setMounted(false);
   }, []);
 
-  if (!mounted) {
-    return null;
-  }
+  useEffect(() => {
+    if (!mounted) return;
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      setShouldHide(currentScrollY > lastScrollY && currentScrollY > 100);
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [mounted, lastScrollY]);
+
+  if (!mounted) return null;
 
   return (
     <Slide 
       appear={false} 
       direction="down" 
-      in={!trigger}
+      in={!shouldHide}
       timeout={300}
       easing={{
         enter: 'cubic-bezier(0.4, 0, 0.2, 1)',
