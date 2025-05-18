@@ -1,15 +1,10 @@
 #!/bin/bash
 
 domains=(mirzaredzic.duckdns.org)
-email="mirzaredzic9@gmail.com" # Update with your email
-staging=0 # Set to 1 if you're testing your setup to avoid hitting request limits
-
-data_path="./certbot"
 rsa_key_size=4096
-
-# Create required directories with proper permissions
-mkdir -p "$data_path/conf/live/$domains"
-chmod -R 755 "$data_path"
+data_path="./certbot"
+email="mirzaredzic9@gmail.com" # Adding a valid address is strongly recommended
+staging=0 # Set to 1 if you're testing your setup to avoid hitting request limits
 
 if [ -d "$data_path" ]; then
   read -p "Existing data found for $domains. Continue and replace existing certificate? (y/N) " decision
@@ -28,7 +23,8 @@ fi
 
 echo "### Creating dummy certificate for $domains ..."
 path="/etc/letsencrypt/live/$domains"
-docker-compose run --rm --entrypoint "\
+mkdir -p "$data_path/conf/live/$domains"
+docker compose -f docker-compose.prod.yml run --rm --entrypoint "\
   openssl req -x509 -nodes -newkey rsa:$rsa_key_size -days 1\
     -keyout '$path/privkey.pem' \
     -out '$path/fullchain.pem' \
@@ -36,14 +32,11 @@ docker-compose run --rm --entrypoint "\
 echo
 
 echo "### Starting nginx ..."
-docker-compose up --force-recreate -d nginx
+docker compose -f docker-compose.prod.yml up --force-recreate -d nginx
 echo
 
-echo "### Waiting for nginx to start..."
-sleep 5
-
 echo "### Deleting dummy certificate for $domains ..."
-docker-compose run --rm --entrypoint "\
+docker compose -f docker-compose.prod.yml run --rm --entrypoint "\
   rm -Rf /etc/letsencrypt/live/$domains && \
   rm -Rf /etc/letsencrypt/archive/$domains && \
   rm -Rf /etc/letsencrypt/renewal/$domains.conf" certbot
@@ -65,16 +58,15 @@ esac
 # Enable staging mode if needed
 if [ $staging != "0" ]; then staging_arg="--staging"; fi
 
-docker-compose run --rm --entrypoint "\
+docker compose -f docker-compose.prod.yml run --rm --entrypoint "\
   certbot certonly --webroot -w /var/www/certbot \
     $staging_arg \
     $email_arg \
     $domain_args \
     --rsa-key-size $rsa_key_size \
     --agree-tos \
-    --force-renewal \
-    --preferred-challenges http" certbot
+    --force-renewal" certbot
 echo
 
 echo "### Reloading nginx ..."
-docker-compose exec nginx nginx -s reload 
+docker compose -f docker-compose.prod.yml exec nginx nginx -s reload 
