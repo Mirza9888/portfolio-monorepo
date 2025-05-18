@@ -41,9 +41,13 @@ api.interceptors.response.use(
     (response) => response,
     (error) => {
         if (error.response?.status === 401) {
-            // Handle unauthorized access
-            document.cookie = 'token=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/';
-            window.location.href = '/login';
+            console.log('Authentication error:', error.response.data);
+            // Only redirect if we're not already on the login page
+            if (!window.location.pathname.includes('/login')) {
+                // Handle unauthorized access
+                document.cookie = 'token=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;secure;samesite=strict';
+                window.location.href = '/login';
+            }
         }
         return Promise.reject(error);
     }
