@@ -28,8 +28,8 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /var/www/laravel
 
-# Copy existing application directory
-COPY . .
+# Copy Laravel application
+COPY portfolio-laravel/ .
 
 # Install dependencies
 RUN composer install --no-interaction --no-dev --optimize-autoloader
