@@ -9,9 +9,20 @@ import {
   Divider,
   useTheme
 } from '@mui/material';
+import { useEffect, useState } from 'react';
 
 export default function AboutView() {
   const theme = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <Container maxWidth="md" sx={{ py: 4, mt: 15 }}>
