@@ -25,29 +25,69 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 
 function HideOnScroll(props: { children: React.ReactElement }) {
   const { children } = props;
-  const trigger = useScrollTrigger();
+  const trigger = useScrollTrigger({
+    disableHysteresis: true,
+    threshold: 100
+  });
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+    return () => {
+      setMounted(false);
+    };
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
-    <Slide appear={false} direction="down" in={!trigger}>
+    <Slide 
+      appear={false} 
+      direction="down" 
+      in={!trigger}
+      timeout={300}
+      easing={{
+        enter: 'cubic-bezier(0.4, 0, 0.2, 1)',
+        exit: 'cubic-bezier(0.4, 0, 0.2, 1)',
+      }}
+    >
       {children}
     </Slide>
   );
 }
 
 export default function Navbar() {
-  const { user, logout } = useAuth();
+  const { user, logout, isLoading } = useAuth();
   const router = useRouter();
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-  const handleLogout = () => {
-    document.cookie = 'token=; Max-Age=0; path=/';
-    logout();
-    setAnchorEl(null);
-    setMobileMenuOpen(false);
-    router.push('/login');
+  React.useEffect(() => {
+    setMounted(true);
+    return () => {
+      setMounted(false);
+    };
+  }, []);
+
+  if (!mounted || isLoading) {
+    return null;
+  }
+
+  const handleLogout = async () => {
+    try {
+      document.cookie = 'token=; Max-Age=0; path=/';
+      logout();
+      setAnchorEl(null);
+      setMobileMenuOpen(false);
+      await router.push('/login');
+    } catch (error) {
+      console.error('Error during logout:', error);
+    }
   };
 
   const navItems = [

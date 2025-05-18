@@ -7,6 +7,7 @@ interface AuthContextType {
   login: (token: string, userData: User) => void;
   logout: () => void;
   getToken: () => string | undefined;
+  isLoading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -33,14 +34,24 @@ const removeCookie = (name: string) => {
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check if we have a token in cookies
-    const token = getCookie('token');
-    if (token) {
-      // You might want to validate the token here
-      // and fetch user data if needed
-    }
+    const initializeAuth = async () => {
+      try {
+        const token = getCookie('token');
+        if (token) {
+          // You might want to validate the token here
+          // and fetch user data if needed
+        }
+      } catch (error) {
+        console.error('Error initializing auth:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    initializeAuth();
   }, []);
 
   const login = (token: string, userData: User) => {
@@ -57,8 +68,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return getCookie('token');
   };
 
+  if (isLoading) {
+    return null; // or a loading spinner
+  }
+
   return (
-    <AuthContext.Provider value={{ user, login, logout, getToken }}>
+    <AuthContext.Provider value={{ user, login, logout, getToken, isLoading }}>
       {children}
     </AuthContext.Provider>
   );
