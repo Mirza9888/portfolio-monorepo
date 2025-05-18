@@ -231,7 +231,38 @@ export default function Navbar() {
               )}
 
               <Box sx={{ width: { xs: 'auto', md: '120px' }, display: 'flex', justifyContent: 'flex-end' }}>
-                {user && !isMobile ? (
+                {!user && !isMobile ? (
+                  <Button
+                    component={Link}
+                    href="/login"
+                    variant="contained"
+                    color="primary"
+                    sx={{
+                      borderRadius: theme.shape.borderRadius,
+                      px: 3,
+                      py: 1,
+                      boxShadow: '0 2px 8px rgba(33, 150, 243, 0.3)',
+                      transition: 'all 0.2s ease-in-out',
+                      '&:hover': {
+                        transform: 'translateY(-2px)',
+                        boxShadow: '0 4px 12px rgba(33, 150, 243, 0.4)'
+                      }
+                    }}
+                    startIcon={
+                      <img 
+                        src="/icons/house.png" 
+                        alt="Login" 
+                        style={{ 
+                          width: 20, 
+                          height: 20,
+                          filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))'
+                        }} 
+                      />
+                    }
+                  >
+                    Login
+                  </Button>
+                ) : user && !isMobile ? (
                   <>
                     <IconButton 
                       onClick={(e) => setAnchorEl(e.currentTarget)} 

@@ -1,7 +1,8 @@
 'use client';
 
-import { Box, Typography, Avatar, Tooltip, useTheme } from '@mui/material';
+import { Box, Typography, Avatar, Tooltip, useTheme, CircularProgress } from '@mui/material';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import { useState, useEffect } from 'react';
 
 type Experience = {
   company: string;
@@ -20,6 +21,47 @@ type Props = {
 
 export default function ExperienceCardSection({ experiences }: Props) {
   const theme = useTheme();
+  const [mounted, setMounted] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+
+  useEffect(() => {
+    try {
+      setMounted(true);
+    } catch (err) {
+      setError(err instanceof Error ? err : new Error('An error occurred'));
+    }
+    return () => {
+      setMounted(false);
+    };
+  }, []);
+
+  if (!mounted) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '200px' }}>
+        <CircularProgress color="primary" />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box sx={{ p: 3, textAlign: 'center' }}>
+        <Typography color="error" variant="h6">
+          Error loading experience section. Please try again later.
+        </Typography>
+      </Box>
+    );
+  }
+
+  if (!experiences || experiences.length === 0) {
+    return (
+      <Box sx={{ p: 3, textAlign: 'center' }}>
+        <Typography color="text.secondary">
+          No experience data available.
+        </Typography>
+      </Box>
+    );
+  }
 
   return (
     <>
