@@ -16,6 +16,12 @@ import MenuItem from '@mui/material/MenuItem';
 import IconButton from '@mui/material/IconButton';
 import { useTheme } from '@mui/material/styles';
 import { useAuth } from '@/context/AuthContext';
+import MenuIcon from '@mui/icons-material/Menu';
+import Drawer from '@mui/material/Drawer';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 function HideOnScroll(props: { children: React.ReactElement }) {
   const { children } = props;
@@ -33,13 +39,92 @@ export default function Navbar() {
   const router = useRouter();
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const handleLogout = () => {
     document.cookie = 'token=; Max-Age=0; path=/';
     logout();
     setAnchorEl(null);
+    setMobileMenuOpen(false);
     router.push('/login');
   };
+
+  const navItems = [
+    { text: 'About Me', href: '/about', icon: '/icons/assistance.png' },
+    { text: 'Content', href: '/content', icon: '/icons/responsive.png' },
+    { text: 'Experience', href: '/experience', icon: '/icons/24-hours.png' },
+    { text: 'Contact', href: '/contact', icon: '/icons/telephone.png' },
+  ];
+
+  const renderMobileMenu = () => (
+    <Drawer
+      anchor="right"
+      open={mobileMenuOpen}
+      onClose={() => setMobileMenuOpen(false)}
+      PaperProps={{
+        sx: {
+          width: '100%',
+          maxWidth: 300,
+          backgroundColor: 'white',
+        },
+      }}
+    >
+      <List sx={{ pt: 2 }}>
+        {navItems.map((item) => (
+          <ListItem
+            key={item.text}
+            component={Link}
+            href={item.href}
+            onClick={() => setMobileMenuOpen(false)}
+            sx={{
+              py: 1.5,
+              '&:hover': {
+                backgroundColor: 'rgba(33, 150, 243, 0.08)',
+              },
+            }}
+          >
+            <img
+              src={item.icon}
+              alt={item.text}
+              style={{
+                width: 22,
+                height: 22,
+                marginRight: 12,
+                filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))',
+              }}
+            />
+            <ListItemText primary={item.text} />
+          </ListItem>
+        ))}
+        {!user && (
+          <ListItem
+            component={Link}
+            href="/login"
+            onClick={() => setMobileMenuOpen(false)}
+            sx={{
+              py: 1.5,
+              '&:hover': {
+                backgroundColor: 'rgba(33, 150, 243, 0.08)',
+              },
+            }}
+          >
+            <img
+              src="/icons/house.png"
+              alt="Login"
+              style={{
+                width: 20,
+                height: 20,
+                marginRight: 12,
+                filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))',
+              }}
+            />
+            <ListItemText primary="Login" />
+          </ListItem>
+        )}
+      </List>
+    </Drawer>
+  );
 
   return (
     <HideOnScroll>
@@ -54,125 +139,58 @@ export default function Navbar() {
       >
         <Container maxWidth="lg">
           <Toolbar disableGutters sx={{ justifyContent: 'space-between', height: '70px' }}>
-            <Box sx={{ width: '120px' }} />
+            <Box sx={{ width: { xs: 'auto', md: '120px' } }} />
             
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-              <Button 
-                component={Link} 
-                href="/about" 
-                sx={{ 
-                  mx: 2, 
+            {!isMobile ? (
+              <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                {navItems.map((item) => (
+                  <Button 
+                    key={item.text}
+                    component={Link} 
+                    href={item.href} 
+                    sx={{ 
+                      mx: 2, 
+                      color: theme.palette.text.primary,
+                      fontWeight: 500,
+                      borderRadius: theme.shape.borderRadius,
+                      transition: 'all 0.2s ease-in-out',
+                      '&:hover': {
+                        backgroundColor: 'rgba(33, 150, 243, 0.08)',
+                        transform: 'translateY(-2px)'
+                      }
+                    }}
+                    startIcon={
+                      <img 
+                        src={item.icon} 
+                        alt={item.text} 
+                        style={{ 
+                          width: 22, 
+                          height: 22, 
+                          filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))'
+                        }} 
+                      />
+                    }
+                  >
+                    {item.text}
+                  </Button>
+                ))}
+              </Box>
+            ) : (
+              <IconButton
+                onClick={() => setMobileMenuOpen(true)}
+                sx={{
                   color: theme.palette.text.primary,
-                  fontWeight: 500,
-                  borderRadius: theme.shape.borderRadius,
-                  transition: 'all 0.2s ease-in-out',
                   '&:hover': {
                     backgroundColor: 'rgba(33, 150, 243, 0.08)',
-                    transform: 'translateY(-2px)'
-                  }
+                  },
                 }}
-                startIcon={
-                  <img 
-                    src="/icons/assistance.png" 
-                    alt="About" 
-                    style={{ 
-                      width: 22, 
-                      height: 22, 
-                      filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))'
-                    }} 
-                  />
-                }
               >
-                About Me
-              </Button>
-              <Button 
-                component={Link} 
-                href="/content" 
-                sx={{ 
-                  mx: 2, 
-                  color: theme.palette.text.primary,
-                  fontWeight: 500,
-                  borderRadius: theme.shape.borderRadius,
-                  transition: 'all 0.2s ease-in-out',
-                  '&:hover': {
-                    backgroundColor: 'rgba(33, 150, 243, 0.08)',
-                    transform: 'translateY(-2px)'
-                  }
-                }}
-                startIcon={
-                  <img 
-                    src="/icons/responsive.png" 
-                    alt="Content" 
-                    style={{ 
-                      width: 22, 
-                      height: 22, 
-                      filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))'
-                    }} 
-                  />
-                }
-              >
-                Content
-              </Button>
-              <Button 
-                component={Link} 
-                href="/experience" 
-                sx={{ 
-                  mx: 2, 
-                  color: theme.palette.text.primary,
-                  fontWeight: 500,
-                  borderRadius: theme.shape.borderRadius,
-                  transition: 'all 0.2s ease-in-out',
-                  '&:hover': {
-                    backgroundColor: 'rgba(33, 150, 243, 0.08)',
-                    transform: 'translateY(-2px)'
-                  }
-                }}
-                startIcon={
-                  <img 
-                    src="/icons/24-hours.png" 
-                    alt="Experience" 
-                    style={{ 
-                      width: 22, 
-                      height: 22, 
-                      filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))'
-                    }} 
-                  />
-                }
-              >
-                Experience
-              </Button>
-              <Button 
-                component={Link} 
-                href="/contact" 
-                sx={{ 
-                  mx: 2, 
-                  color: theme.palette.text.primary,
-                  fontWeight: 500,
-                  borderRadius: theme.shape.borderRadius,
-                  transition: 'all 0.2s ease-in-out',
-                  '&:hover': {
-                    backgroundColor: 'rgba(33, 150, 243, 0.08)',
-                    transform: 'translateY(-2px)'
-                  }
-                }}
-                startIcon={
-                  <img 
-                    src="/icons/telephone.png" 
-                    alt="Contact" 
-                    style={{ 
-                      width: 22, 
-                      height: 22, 
-                      filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))'
-                    }} 
-                  />
-                }
-              >
-                Contact
-              </Button>
-            </Box>
+                <MenuIcon />
+              </IconButton>
+            )}
 
-            <Box sx={{ width: '120px', display: 'flex', justifyContent: 'flex-end' }}>
-              {user ? (
+            <Box sx={{ width: { xs: 'auto', md: '120px' }, display: 'flex', justifyContent: 'flex-end' }}>
+              {user && !isMobile ? (
                 <>
                   <IconButton 
                     onClick={(e) => setAnchorEl(e.currentTarget)} 
@@ -228,39 +246,12 @@ export default function Navbar() {
                     </MenuItem>
                   </Menu>
                 </>
-              ) : (
-                <Button 
-                  component={Link} 
-                  href="/login"
-                  startIcon={
-                    <img 
-                      src="/icons/house.png" 
-                      alt="Login" 
-                      style={{ 
-                        width: 20, 
-                        height: 20,
-                        filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))'
-                      }} 
-                    />
-                  }
-                  sx={{ 
-                    color: theme.palette.text.primary,
-                    fontWeight: 500,
-                    borderRadius: theme.shape.borderRadius,
-                    transition: 'all 0.2s ease-in-out',
-                    '&:hover': {
-                      backgroundColor: 'rgba(33, 150, 243, 0.08)',
-                      transform: 'translateY(-2px)'
-                    }
-                  }}
-                >
-                  Login
-                </Button>
-              )}
+              ) : null}
             </Box>
           </Toolbar>
         </Container>
       </AppBar>
+      {renderMobileMenu()}
     </HideOnScroll>
   );
 }
