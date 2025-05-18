@@ -25,7 +25,7 @@ services:
       - ./certbot/www:/var/www/certbot
     networks:
       - portfolio-network
-    command: certonly --webroot --webroot-path=/var/www/certbot --email mirzaredzic9@gmail.com --agree-tos --no-eff-email -d mirzaredzic.duckdns.org --staging
+    command: certonly --webroot --webroot-path=/var/www/certbot --email mirzaredzic9@gmail.com --agree-tos --no-eff-email -d mirzaredzic.duckdns.org --force-renewal --non-interactive
     depends_on:
       - nginx
 
