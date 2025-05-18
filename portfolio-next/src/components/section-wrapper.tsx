@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Container, Fade } from '@mui/material';
+import { Container, Fade, Box, CircularProgress, Typography } from '@mui/material';
 
 interface SectionWrapperProps {
   children: React.ReactNode;
@@ -15,10 +15,15 @@ export default function SectionWrapper({
   topMargin = 15 
 }: SectionWrapperProps) {
   const [mounted, setMounted] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setMounted(true);
+      try {
+        setMounted(true);
+      } catch (err) {
+        setError(err instanceof Error ? err : new Error('An error occurred'));
+      }
     }, 100);
 
     return () => {
@@ -27,8 +32,26 @@ export default function SectionWrapper({
     };
   }, []);
 
+  if (error) {
+    return (
+      <Container maxWidth={maxWidth} sx={{ py: 4, mt: topMargin }}>
+        <Box sx={{ p: 3, textAlign: 'center' }}>
+          <Typography color="error" variant="h6">
+            Error loading section. Please try again later.
+          </Typography>
+        </Box>
+      </Container>
+    );
+  }
+
   if (!mounted) {
-    return null;
+    return (
+      <Container maxWidth={maxWidth} sx={{ py: 4, mt: topMargin }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '200px' }}>
+          <CircularProgress color="primary" />
+        </Box>
+      </Container>
+    );
   }
 
   return (
