@@ -7,12 +7,6 @@ use App\Http\Controllers\Auth\ContentController;
 
 Route::post('/login', [LoginController::class, 'login']);
 
-// Public routes
-Route::prefix('contents')->group(function () {
-    Route::get('', [ContentController::class, 'getContent']);
-    Route::get('/{content}', [ContentController::class, 'showContent']);
-});
-
 // Protected routes
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/logout', [LoginController::class, 'logout']);
@@ -21,6 +15,8 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::prefix('contents')->group(function () {
+        Route::get('', [ContentController::class, 'getContent']);
+        Route::get('/{content}', [ContentController::class, 'showContent']);
         Route::post('', [ContentController::class, 'storeContent']);
         Route::put('/{content}', [ContentController::class, 'updateContent']);
         Route::delete('/{content}', [ContentController::class, 'destroyContent']);

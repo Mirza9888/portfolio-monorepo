@@ -1,16 +1,14 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
+import api from '../../lib/axios';
 import { API_PATHS } from '../path';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 // API Function
 const createContentApi = async (formData: FormData): Promise<any> => {
-  const response = await axios.post(`${API_URL}${API_PATHS.CONTENTS}`, formData, {
+  const response = await api.post(`${API_URL}${API_PATHS.CONTENTS}`, formData, {
     headers: {
-      'Accept': 'application/json',
       'Content-Type': 'multipart/form-data',
-      'Authorization': `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
     },
   });
 
@@ -38,12 +36,7 @@ export const useContentMutation = () => {
 // API Function for fetching all contents
 export const useContents = () => {
   const getAllContents = async (): Promise<any> => {
-    const response = await axios.get(`${API_URL}${API_PATHS.CONTENTS}`, {
-      headers: {
-        'Accept': 'application/json',
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
-      },
-    });
+    const response = await api.get(`${API_URL}${API_PATHS.CONTENTS}`);
 
     return response.data.data;
   };
