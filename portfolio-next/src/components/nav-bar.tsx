@@ -55,6 +55,8 @@ function HideOnScroll(props: { children: React.ReactElement }) {
       direction="down" 
       in={!shouldHide}
       timeout={300}
+      mountOnEnter
+      unmountOnExit
       easing={{
         enter: 'cubic-bezier(0.4, 0, 0.2, 1)',
         exit: 'cubic-bezier(0.4, 0, 0.2, 1)',
