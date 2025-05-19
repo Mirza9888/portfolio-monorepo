@@ -50,20 +50,19 @@ function HideOnScroll(props: { children: React.ReactElement }) {
   if (!mounted) return null;
 
   return (
-    <Slide 
-      appear={false} 
-      direction="down" 
-      in={!shouldHide}
-      timeout={300}
-      mountOnEnter
-      unmountOnExit
-      easing={{
-        enter: 'cubic-bezier(0.4, 0, 0.2, 1)',
-        exit: 'cubic-bezier(0.4, 0, 0.2, 1)',
+    <Box
+      sx={{
+        position: 'fixed',
+        width: '100%',
+        top: 0,
+        left: 0,
+        zIndex: 1100,
+        transform: shouldHide ? 'translateY(-100%)' : 'translateY(0)',
+        transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
       }}
     >
       {children}
-    </Slide>
+    </Box>
   );
 }
 
