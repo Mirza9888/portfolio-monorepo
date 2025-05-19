@@ -88,7 +88,6 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     try {
-      document.cookie = 'token=; Max-Age=0; path=/';
       logout();
       setAnchorEl(null);
       setMobileMenuOpen(false);
@@ -243,17 +242,15 @@ export default function Navbar() {
                   <Button
                     component={Link}
                     href="/login"
-                    variant="contained"
-                    color="primary"
-                    sx={{
+                    sx={{ 
+                      mx: 2, 
+                      color: theme.palette.text.primary,
+                      fontWeight: 500,
                       borderRadius: theme.shape.borderRadius,
-                      px: 3,
-                      py: 1,
-                      boxShadow: '0 2px 8px rgba(33, 150, 243, 0.3)',
                       transition: 'all 0.2s ease-in-out',
                       '&:hover': {
-                        transform: 'translateY(-2px)',
-                        boxShadow: '0 4px 12px rgba(33, 150, 243, 0.4)'
+                        backgroundColor: 'rgba(33, 150, 243, 0.08)',
+                        transform: 'translateY(-2px)'
                       }
                     }}
                     startIcon={
