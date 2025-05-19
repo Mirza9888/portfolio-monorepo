@@ -1,6 +1,7 @@
 'use client';
 import { createContext, useContext, useState, useEffect } from 'react';
 import { User } from '@/types/user';
+import api from '@/lib/axios';
 
 interface AuthContextType {
   user: User | null;
@@ -41,11 +42,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       try {
         const token = getCookie('token');
         if (token) {
-          // You might want to validate the token here
-          // and fetch user data if needed
+          // Fetch user data if token exists
+          const response = await api.get('/user');
+          setUser(response.data);
         }
       } catch (error) {
         console.error('Error initializing auth:', error);
+        // If there's an error (like invalid token), clear the token
+        removeCookie('token');
+        setUser(null);
       } finally {
         setIsLoading(false);
       }
