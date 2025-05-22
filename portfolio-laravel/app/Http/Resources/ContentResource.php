@@ -19,9 +19,10 @@ class ContentResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'technologies' => is_string($this->technologies) ? json_decode($this->technologies) : $this->technologies,
-            'image_url' => $this->image ? \Storage::url($this->image) : null,
-
-            'images' => $this->images ? array_map(fn($img) => asset('storage/' . $img), json_decode($this->images, true)) : [],
+            'image_url' => $this->image ? asset('storage/' . $this->image) : null,
+            'images' => $this->images ? array_map(function($img) {
+                return asset('storage/' . $img);
+            }, json_decode($this->images, true)) : [],
             'user_id' => $this->user_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
