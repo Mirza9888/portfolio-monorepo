@@ -18,14 +18,14 @@ class ContentService
     public function createContent(StoreContentRequest $request)
     {
         $user = $request->user();
-
-    
         $validatedData = $request->validated();
         
-       
-        $technologies = isset($validatedData['technologies']) ? json_decode($validatedData['technologies'], true) : null;
-
-       
+        // Handle technologies - decode if it's already JSON
+        $technologies = isset($validatedData['technologies']) ? 
+            (is_string($validatedData['technologies']) ? json_decode($validatedData['technologies'], true) : $validatedData['technologies']) 
+            : null;
+        
+        // Handle images
         $imagePaths = [];
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
@@ -34,13 +34,12 @@ class ContentService
             }
         }
 
-       
         return $user->contents()->create([
             'title' => $validatedData['title'],
             'description' => $validatedData['description'],
             'technologies' => $technologies ? json_encode($technologies) : null,
             'image' => $imagePaths[0] ?? null,
-            'images' => count($imagePaths) ? json_encode($imagePaths) : null,
+            'images' => !empty($imagePaths) ? json_encode($imagePaths) : null,
         ]);
     }
 
