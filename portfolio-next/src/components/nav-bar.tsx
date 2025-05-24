@@ -144,7 +144,7 @@ export default function Navbar() {
             <ListItemText primary={item.text} />
           </ListItem>
         ))}
-        {!user && (
+        {!user ? (
           <ListItem
             component={Link}
             href="/login"
@@ -167,6 +167,32 @@ export default function Navbar() {
               }}
             />
             <ListItemText primary="Login" />
+          </ListItem>
+        ) : (
+          <ListItem
+            onClick={() => {
+              handleLogout();
+              setMobileMenuOpen(false);
+            }}
+            sx={{
+              py: 1.5,
+              cursor: 'pointer',
+              '&:hover': {
+                backgroundColor: 'rgba(33, 150, 243, 0.08)',
+              },
+            }}
+          >
+            <img
+              src="/icons/house.png"
+              alt="Logout"
+              style={{
+                width: 20,
+                height: 20,
+                marginRight: 12,
+                filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))',
+              }}
+            />
+            <ListItemText primary="Logout" />
           </ListItem>
         )}
       </List>
