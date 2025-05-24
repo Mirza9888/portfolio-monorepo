@@ -82,18 +82,12 @@ export default function Navbar() {
     };
   }, []);
 
-  React.useEffect(() => {
-    console.log('User state changed:', user);
-    console.log('Is mobile:', isMobile);
-  }, [user, isMobile]);
-
   if (!mounted || isLoading) {
     return null;
   }
 
   const handleLogout = async () => {
     try {
-      console.log('Logging out...');
       logout();
       setAnchorEl(null);
       setMobileMenuOpen(false);
@@ -110,103 +104,99 @@ export default function Navbar() {
     { text: 'Contact', href: '/contact', icon: '/icons/telephone.png' },
   ];
 
-  const renderMobileMenu = () => {
-    console.log('Rendering mobile menu, user:', user);
-    return (
-      <Drawer
-        anchor="right"
-        open={mobileMenuOpen}
-        onClose={() => setMobileMenuOpen(false)}
-        PaperProps={{
-          sx: {
-            width: '100%',
-            maxWidth: 300,
-            backgroundColor: 'white',
-          },
-        }}
-      >
-        <List sx={{ pt: 2 }}>
-          {navItems.map((item) => (
-            <ListItem
-              key={item.text}
-              component={Link}
-              href={item.href}
-              onClick={() => setMobileMenuOpen(false)}
-              sx={{
-                py: 1.5,
-                '&:hover': {
-                  backgroundColor: 'rgba(33, 150, 243, 0.08)',
-                },
+  const renderMobileMenu = () => (
+    <Drawer
+      anchor="right"
+      open={mobileMenuOpen}
+      onClose={() => setMobileMenuOpen(false)}
+      PaperProps={{
+        sx: {
+          width: '100%',
+          maxWidth: 300,
+          backgroundColor: 'white',
+        },
+      }}
+    >
+      <List sx={{ pt: 2 }}>
+        {navItems.map((item) => (
+          <ListItem
+            key={item.text}
+            component={Link}
+            href={item.href}
+            onClick={() => setMobileMenuOpen(false)}
+            sx={{
+              py: 1.5,
+              '&:hover': {
+                backgroundColor: 'rgba(33, 150, 243, 0.08)',
+              },
+            }}
+          >
+            <img
+              src={item.icon}
+              alt={item.text}
+              style={{
+                width: 22,
+                height: 22,
+                marginRight: 12,
+                filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))',
               }}
-            >
-              <img
-                src={item.icon}
-                alt={item.text}
-                style={{
-                  width: 22,
-                  height: 22,
-                  marginRight: 12,
-                  filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))',
-                }}
-              />
-              <ListItemText primary={item.text} />
-            </ListItem>
-          ))}
-          {user ? (
-            <ListItem
-              onClick={() => {
-                console.log('Logout clicked');
-                handleLogout();
+            />
+            <ListItemText primary={item.text} />
+          </ListItem>
+        ))}
+        {user ? (
+          <ListItem
+            onClick={() => {
+              handleLogout();
+            }}
+            sx={{
+              py: 1.5,
+              cursor: 'pointer',
+              '&:hover': {
+                backgroundColor: 'rgba(33, 150, 243, 0.08)',
+              },
+            }}
+          >
+            <img
+              src="/icons/house.png"
+              alt="Logout"
+              style={{
+                width: 20,
+                height: 20,
+                marginRight: 12,
+                filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))',
               }}
-              sx={{
-                py: 1.5,
-                cursor: 'pointer',
-                '&:hover': {
-                  backgroundColor: 'rgba(33, 150, 243, 0.08)',
-                },
+            />
+            <ListItemText primary="Logout" />
+          </ListItem>
+        ) : (
+          <ListItem
+            component={Link}
+            href="/login"
+            onClick={() => setMobileMenuOpen(false)}
+            sx={{
+              py: 1.5,
+              '&:hover': {
+                backgroundColor: 'rgba(33, 150, 243, 0.08)',
+              },
+            }}
+          >
+            <img
+              src="/icons/house.png"
+              alt="Login"
+              style={{
+                width: 20,
+                height: 20,
+                marginRight: 12,
+                filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))',
               }}
-            >
-              <img
-                src="/icons/house.png"
-                alt="Logout"
-                style={{
-                  width: 20,
-                  height: 20,
-                  marginRight: 12,
-                  filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))',
-                }}
-              />
-              <ListItemText primary="Logout" />
-            </ListItem>
-          ) : (
-            <ListItem
-              component={Link}
-              href="/login"
-              onClick={() => setMobileMenuOpen(false)}
-              sx={{
-                py: 1.5,
-                '&:hover': {
-                  backgroundColor: 'rgba(33, 150, 243, 0.08)',
-                },
-              }}
-            >
-              <img
-                src="/icons/house.png"
-                alt="Login"
-                style={{
-                  width: 20,
-                  height: 20,
-                  marginRight: 12,
-                  filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))',
-                }}
-              />
-              <ListItemText primary="Login" />
-            </ListItem>
-          )}
-        </List>
-      </Drawer>
-    );
-  };
+            />
+            <ListItemText primary="Login" />
+          </ListItem>
+        )}
+      </List>
+    </Drawer>
+  );
 
   return (
     <HideOnScroll>
