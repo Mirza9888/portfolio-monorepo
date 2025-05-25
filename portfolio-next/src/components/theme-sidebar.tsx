@@ -8,16 +8,20 @@ import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { useTheme } from '@/context/ThemeContext';
 
 const SidebarContainer = styled(Box)(({ theme }) => ({
-  position: 'relative',
+  position: 'fixed',
+  right: 0,
+  top: '40%',
+  transform: 'translateY(-50%)',
+  zIndex: 1000,
   display: 'flex',
-  flexDirection: 'row',
+  flexDirection: 'column',
   alignItems: 'center',
-  gap: '0.5rem',
-  padding: '0.5rem',
-  marginTop: '1rem',
-  marginBottom: '1rem',
-  backgroundColor: 'transparent',
-  transition: 'all 0.3s ease-in-out',
+  gap: '1rem',
+  padding: '1rem',
+  backgroundColor: theme.palette.background.paper,
+  boxShadow: '-2px 0 8px rgba(0, 0, 0, 0.1)',
+  borderRadius: '8px 0 0 8px',
+  transition: 'transform 0.3s ease-in-out',
 }));
 
 const ThemeSwitch = styled(Switch)(({ theme }) => ({
@@ -36,22 +40,42 @@ const ThemeSwitch = styled(Switch)(({ theme }) => ({
 }));
 
 export default function ThemeSidebar() {
+  const [isOpen, setIsOpen] = useState(false);
   const { mode, toggleTheme } = useTheme();
   const theme = useMuiTheme();
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
-      <SidebarContainer>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Brightness7Icon color={mode === 'light' ? 'primary' : 'action'} />
-          <ThemeSwitch
-            checked={mode === 'dark'}
-            onChange={toggleTheme}
-            inputProps={{ 'aria-label': 'toggle theme' }}
-          />
-          <Brightness4Icon color={mode === 'dark' ? 'primary' : 'action'} />
-        </Box>
-      </SidebarContainer>
-    </Box>
+    <SidebarContainer
+      sx={{
+        transform: isOpen ? 'translateY(-50%)' : 'translate(calc(100% - 40px), -50%)',
+      }}
+    >
+      <IconButton
+        onClick={() => setIsOpen(!isOpen)}
+        sx={{
+          position: 'absolute',
+          left: '-20px',
+          top: '50%',
+          transform: 'translateY(-50%)',
+          backgroundColor: theme.palette.background.paper,
+          boxShadow: '-2px 0 8px rgba(0, 0, 0, 0.1)',
+          '&:hover': {
+            backgroundColor: theme.palette.background.paper,
+          },
+        }}
+      >
+        {isOpen ? '→' : '←'}
+      </IconButton>
+      
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Brightness7Icon color={mode === 'light' ? 'primary' : 'action'} />
+        <ThemeSwitch
+          checked={mode === 'dark'}
+          onChange={toggleTheme}
+          inputProps={{ 'aria-label': 'toggle theme' }}
+        />
+        <Brightness4Icon color={mode === 'dark' ? 'primary' : 'action'} />
+      </Box>
+    </SidebarContainer>
   );
 } 
