@@ -8,7 +8,7 @@ COPY package*.json ./
 RUN npm ci
 
 # Copy only necessary files for build
-COPY next.config.js ./
+COPY next.config.mjs ./
 COPY tsconfig.json ./
 COPY public ./public
 COPY src ./src
