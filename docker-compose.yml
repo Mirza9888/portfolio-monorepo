@@ -57,7 +57,7 @@ services:
       - NEXT_PUBLIC_API_URL=http://portfolio:8443/api
     volumes:
       - ./portfolio-next:/app
-      - /app/node_modules
+      - nextjs_node_modules:/app/node_modules
     networks:
       - portfolio_network
 
@@ -67,3 +67,4 @@ networks:
 
 volumes:
   mysql_data:
+  nextjs_node_modules:
