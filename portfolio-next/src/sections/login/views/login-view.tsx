@@ -104,6 +104,24 @@ export default function Login() {
                     error={touched.email && Boolean(errors.email)}
                     helperText={touched.email && errors.email}
                     InputLabelProps={{ required: false }}
+                    InputProps={{
+                      sx: {
+                        '&.Mui-focused': {
+                          backgroundColor: 'rgba(144, 202, 249, 0.1)',
+                        },
+                        '& fieldset': {
+                          borderColor: 'primary.main',
+                        },
+                        '& input:-webkit-autofill': {
+                          boxShadow: '0 0 0 1000px rgba(144, 202, 249, 0.3) inset',
+                          transition: 'background-color 5000s ease-in-out 0s',
+                        },
+                        '& input:-webkit-autofill:focus': {
+                          boxShadow: '0 0 0 1000px rgba(144, 202, 249, 0.4) inset',
+                          transition: 'background-color 5000s ease-in-out 0s',
+                        },
+                      }
+                    }}
                   />
 
                   <Field
