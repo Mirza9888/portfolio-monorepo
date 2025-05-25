@@ -24,9 +24,8 @@ class StoreContentRequest extends FormRequest
         return [
             'title' => ['required'],
             'image'=>['nullable','string'],
-            'images'=>['nullable','array'],
-           'images.*' => ['file', 'mimes:jpeg,jpg,png,webp'],
-
+            'images'=>['required','array'],
+            'images.*' => ['required', 'file', 'mimes:jpeg,jpg,png,webp'],
             'description'=>['required','string'],
             'technologies'=>['nullable','string'],
             'technologies.*'=>['string']

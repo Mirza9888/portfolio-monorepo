@@ -1,0 +1,23 @@
+# Docker and deployment files
+Docker/nginx/default.conf
+Dockerfile
+Dockerfile.certbot
+docker-compose.yml
+docker-compose.prod.yml
+init-letsencrypt.sh
+deploy.sh
+portfolio-laravel/Dockerfile
+portfolio-next/Dockerfile
+
+# Environment and config files
+.env
+portfolio-laravel/config/cors.php
+portfolio-laravel/config/session.php
+portfolio-next/next.config.mjs
+
+# Composer files
+composer-setup.php
+composer.phar
+
+# Documentation
+DEPLOYMENT.md 
