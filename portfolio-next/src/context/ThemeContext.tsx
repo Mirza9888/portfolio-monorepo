@@ -16,12 +16,14 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [mode, setMode] = useState<ThemeMode>('light');
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     const savedMode = localStorage.getItem('theme-mode') as ThemeMode;
     if (savedMode) {
       setMode(savedMode);
     }
+    setMounted(true);
   }, []);
 
   const toggleTheme = () => {
@@ -79,6 +81,11 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
           }),
     },
   });
+
+  // Prevent flash of wrong theme
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <ThemeContext.Provider value={{ mode, toggleTheme }}>
