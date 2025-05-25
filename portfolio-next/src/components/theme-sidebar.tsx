@@ -8,18 +8,15 @@ import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { useTheme } from '@/context/ThemeContext';
 
 const SidebarContainer = styled(Box)(({ theme }) => ({
-  position: 'fixed',
-  right: '1rem',
-  top: '1rem',
-  zIndex: 1000,
+  position: 'relative',
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
   gap: '0.5rem',
   padding: '0.5rem',
-  backgroundColor: theme.palette.background.paper,
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-  borderRadius: '8px',
+  marginTop: '1rem',
+  marginBottom: '1rem',
+  backgroundColor: 'transparent',
   transition: 'all 0.3s ease-in-out',
 }));
 
@@ -39,21 +36,22 @@ const ThemeSwitch = styled(Switch)(({ theme }) => ({
 }));
 
 export default function ThemeSidebar() {
-  const [isOpen, setIsOpen] = useState(false);
   const { mode, toggleTheme } = useTheme();
   const theme = useMuiTheme();
 
   return (
-    <SidebarContainer>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-        <Brightness7Icon color={mode === 'light' ? 'primary' : 'action'} />
-        <ThemeSwitch
-          checked={mode === 'dark'}
-          onChange={toggleTheme}
-          inputProps={{ 'aria-label': 'toggle theme' }}
-        />
-        <Brightness4Icon color={mode === 'dark' ? 'primary' : 'action'} />
-      </Box>
-    </SidebarContainer>
+    <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+      <SidebarContainer>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Brightness7Icon color={mode === 'light' ? 'primary' : 'action'} />
+          <ThemeSwitch
+            checked={mode === 'dark'}
+            onChange={toggleTheme}
+            inputProps={{ 'aria-label': 'toggle theme' }}
+          />
+          <Brightness4Icon color={mode === 'dark' ? 'primary' : 'action'} />
+        </Box>
+      </SidebarContainer>
+    </Box>
   );
 } 

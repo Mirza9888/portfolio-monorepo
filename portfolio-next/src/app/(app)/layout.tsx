@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ThemeProvider } from "@/context/ThemeContext";
 import AuthProviderWrapper from "@/components/auth-provider-wrapper";
 import ThemeSidebar from "@/components/theme-sidebar";
+import { Container } from "@mui/material";
 
 export const metadata: Metadata = {
   title: "Portfolio",
@@ -21,8 +22,10 @@ export default function RootLayout({
       <body>
         <ThemeProvider>
           <AuthProviderWrapper>
-            {children}
-            <ThemeSidebar />
+            <Container maxWidth="lg">
+              <ThemeSidebar />
+              {children}
+            </Container>
           </AuthProviderWrapper>
         </ThemeProvider>
       </body>
