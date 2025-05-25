@@ -1,5 +1,7 @@
 import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button, Box, Chip, CircularProgress } from '@mui/material';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 
 interface ContentEditDialogProps {
   open: boolean;
@@ -8,47 +10,42 @@ interface ContentEditDialogProps {
   isLoading: boolean;
 }
 
+const validationSchema = Yup.object().shape({
+  title: Yup.string()
+    .required('Title is required')
+    .min(3, 'Title must be at least 3 characters')
+    .max(100, 'Title must not exceed 100 characters'),
+  description: Yup.string()
+    .required('Description is required')
+    .min(10, 'Description must be at least 10 characters')
+    .max(1000, 'Description must not exceed 1000 characters'),
+  technologies: Yup.array()
+    .of(Yup.string())
+    .min(1, 'At least one technology is required'),
+});
+
+const initialValues = {
+  title: '',
+  description: '',
+  technologies: [] as string[],
+};
+
 const ContentEditDialog = ({ open, onClose, onSave, isLoading }: ContentEditDialogProps) => {
-  const [newProject, setNewProject] = useState({
-    title: '',
-    description: '',
-    technologies: '',
-  });
-  
   const [files, setFiles] = useState<File[]>([]);
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
-  const [technologiesArray, setTechnologiesArray] = useState<string[]>([]);
   const [techInput, setTechInput] = useState('');
-  
   const [imageDialogOpen, setImageDialogOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
 
-  // Reset form state when dialog is opened or closed
+  // Memoize the form validation schema
+  const memoizedValidationSchema = useMemo(() => validationSchema, []);
+
+  // Cleanup function for preview URLs
   useEffect(() => {
-    if (!open) {
-      // Reset all state when dialog closes
-      resetForm();
-    }
-  }, [open]);
-
-  const resetForm = () => {
-    setNewProject({
-      title: '',
-      description: '',
-      technologies: '',
-    });
-    setFiles([]);
-    // Clean up object URLs to prevent memory leaks
-    previewUrls.forEach(url => URL.revokeObjectURL(url));
-    setPreviewUrls([]);
-    setTechnologiesArray([]);
-    setTechInput('');
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setNewProject(prev => ({ ...prev, [name]: value }));
-  };
+    return () => {
+      previewUrls.forEach(url => URL.revokeObjectURL(url));
+    };
+  }, [previewUrls]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -64,7 +61,6 @@ const ContentEditDialog = ({ open, onClose, onSave, isLoading }: ContentEditDial
     updatedFiles.splice(index, 1);
     setFiles(updatedFiles);
 
-    // Revoke the object URL to prevent memory leaks
     URL.revokeObjectURL(previewUrls[index]);
     
     const updatedUrls = [...previewUrls];
@@ -72,25 +68,11 @@ const ContentEditDialog = ({ open, onClose, onSave, isLoading }: ContentEditDial
     setPreviewUrls(updatedUrls);
   };
 
-  // Add the missing handleRemoveTechnology function
-  const handleRemoveTechnology = (index: number) => {
-    const updatedTech = [...technologiesArray];
-    updatedTech.splice(index, 1);
-    setTechnologiesArray(updatedTech);
-  };
-
-  const handleAddTechnology = () => {
-    if (techInput.trim()) {
-      setTechnologiesArray([...technologiesArray, techInput.trim()]);
-      setTechInput('');
-    }
-  };
-
-  const handleSave = async () => {
+  const handleSubmit = async (values: typeof initialValues) => {
     const formData = new FormData();
-    formData.append('title', newProject.title);
-    formData.append('description', newProject.description);
-    formData.append('technologies', JSON.stringify(technologiesArray));
+    formData.append('title', values.title);
+    formData.append('description', values.description);
+    formData.append('technologies', JSON.stringify(values.technologies));
 
     files.forEach((file, index) => {
       formData.append(`images[${index}]`, file);
@@ -98,15 +80,17 @@ const ContentEditDialog = ({ open, onClose, onSave, isLoading }: ContentEditDial
 
     try {
       await onSave(formData);
-      // Reset form after successful save
-      resetForm();
+      handleClose();
     } catch (error) {
       console.error("Error saving project:", error);
-      // Don't reset form on error so user can try again
     }
   };
 
   const handleClose = () => {
+    setFiles([]);
+    previewUrls.forEach(url => URL.revokeObjectURL(url));
+    setPreviewUrls([]);
+    setTechInput('');
     onClose();
   };
 
@@ -134,141 +118,164 @@ const ContentEditDialog = ({ open, onClose, onSave, isLoading }: ContentEditDial
         <DialogTitle sx={{ fontWeight: 'bold', bgcolor: 'primary.dark', color: 'primary.light', py: 2 }}>
           Add New Project
         </DialogTitle>
-        <DialogContent sx={{ mt: 2 }}>
-          <TextField
-            label="Title"
-            fullWidth
-            name="title"
-            value={newProject.title}
-            onChange={handleChange}
-            margin="normal"
-            required
-          />
-          <TextField
-            label="Description"
-            fullWidth
-            name="description"
-            value={newProject.description}
-            onChange={handleChange}
-            margin="normal"
-            multiline
-            rows={4}
-            required
-          />
-          
-          <Box sx={{ mt: 2, mb: 1 }}>
-            <TextField
-              label="Technologies"
-              fullWidth
-              value={techInput}
-              onChange={(e) => setTechInput(e.target.value)}
-              margin="normal"
-              helperText="Type a technology and press Enter to add it"
-              onKeyPress={(e) => {
-                if (e.key === 'Enter') {
-                  e.preventDefault();
-                  handleAddTechnology();
-                }
-              }}
-            />
-            <Button 
-              variant="outlined" 
-              size="small" 
-              onClick={handleAddTechnology} 
-              sx={{ mt: 1 }}
-            >
-              Add Technology
-            </Button>
-          </Box>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={memoizedValidationSchema}
+          onSubmit={handleSubmit}
+        >
+          {({ values, errors, touched, handleChange, setFieldValue }) => (
+            <Form>
+              <DialogContent sx={{ mt: 2 }}>
+                <Field
+                  as={TextField}
+                  fullWidth
+                  name="title"
+                  label="Title"
+                  margin="normal"
+                  error={touched.title && Boolean(errors.title)}
+                  helperText={touched.title && errors.title}
+                />
 
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1 }}>
-            {technologiesArray.map((tech, index) => (
-              <Chip 
-                key={index} 
-                label={tech} 
-                onDelete={() => handleRemoveTechnology(index)}
-                color="primary"
-                variant="outlined"
-              />
-            ))}
-          </Box>
-
-          <Box sx={{ mt: 3 }}>
-            <Button
-              variant="outlined"
-              component="label"
-              fullWidth
-            >
-              Upload Images
-              <input
-                type="file"
-                multiple
-                accept="image/*"
-                onChange={handleFileChange}
-                hidden
-              />
-            </Button>
-          </Box>
-
-          {previewUrls.length > 0 && (
-            <Box sx={{ mt: 2 }}>
-              <Box sx={{ fontWeight: 'bold', mb: 1 }}>Selected Images ({previewUrls.length})</Box>
-              <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-                {previewUrls.map((url, index) => (
-                  <Box 
-                    key={index} 
-                    sx={{ position: 'relative' }}
+                <Field
+                  as={TextField}
+                  fullWidth
+                  name="description"
+                  label="Description"
+                  margin="normal"
+                  multiline
+                  rows={4}
+                  error={touched.description && Boolean(errors.description)}
+                  helperText={touched.description && errors.description}
+                />
+                
+                <Box sx={{ mt: 2, mb: 1 }}>
+                  <TextField
+                    label="Technologies"
+                    fullWidth
+                    value={techInput}
+                    onChange={(e) => setTechInput(e.target.value)}
+                    margin="normal"
+                    helperText="Type a technology and press Enter to add it"
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        if (techInput.trim()) {
+                          setFieldValue('technologies', [...values.technologies, techInput.trim()]);
+                          setTechInput('');
+                        }
+                      }
+                    }}
+                  />
+                  <Button 
+                    variant="outlined" 
+                    size="small" 
+                    onClick={() => {
+                      if (techInput.trim()) {
+                        setFieldValue('technologies', [...values.technologies, techInput.trim()]);
+                        setTechInput('');
+                      }
+                    }}
+                    sx={{ mt: 1 }}
                   >
-                    <Box 
-                      component="img" 
-                      src={url} 
-                      sx={{ 
-                        width: 100, 
-                        height: 100, 
-                        objectFit: 'cover',
-                        borderRadius: 1,
-                        cursor: 'pointer'
+                    Add Technology
+                  </Button>
+                </Box>
+
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1 }}>
+                  {values.technologies.map((tech, index) => (
+                    <Chip 
+                      key={index} 
+                      label={tech} 
+                      onDelete={() => {
+                        const newTechs = [...values.technologies];
+                        newTechs.splice(index, 1);
+                        setFieldValue('technologies', newTechs);
                       }}
-                      onClick={() => openImageDialog(index)}
+                      color="primary"
+                      variant="outlined"
                     />
-                    <Button 
-                      size="small" 
-                      color="error" 
-                      variant="contained"
-                      onClick={() => handleRemoveImage(index)}
-                      sx={{ 
-                        position: 'absolute', 
-                        top: -10, 
-                        right: -10, 
-                        minWidth: 'auto',
-                        width: 24,
-                        height: 24,
-                        p: 0,
-                        borderRadius: '50%'
-                      }}
-                    >
-                      ×
-                    </Button>
+                  ))}
+                </Box>
+
+                <Box sx={{ mt: 3 }}>
+                  <Button
+                    variant="outlined"
+                    component="label"
+                    fullWidth
+                  >
+                    Upload Images
+                    <input
+                      type="file"
+                      multiple
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      hidden
+                    />
+                  </Button>
+                </Box>
+
+                {previewUrls.length > 0 && (
+                  <Box sx={{ mt: 2 }}>
+                    <Box sx={{ fontWeight: 'bold', mb: 1 }}>Selected Images ({previewUrls.length})</Box>
+                    <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                      {previewUrls.map((url, index) => (
+                        <Box 
+                          key={index} 
+                          sx={{ position: 'relative' }}
+                        >
+                          <Box 
+                            component="img" 
+                            src={url} 
+                            sx={{ 
+                              width: 100, 
+                              height: 100, 
+                              objectFit: 'cover',
+                              borderRadius: 1,
+                              cursor: 'pointer'
+                            }}
+                            onClick={() => openImageDialog(index)}
+                          />
+                          <Button 
+                            size="small" 
+                            color="error" 
+                            variant="contained"
+                            onClick={() => handleRemoveImage(index)}
+                            sx={{ 
+                              position: 'absolute', 
+                              top: -10, 
+                              right: -10, 
+                              minWidth: 'auto',
+                              width: 24,
+                              height: 24,
+                              p: 0,
+                              borderRadius: '50%'
+                            }}
+                          >
+                            ×
+                          </Button>
+                        </Box>
+                      ))}
+                    </Box>
                   </Box>
-                ))}
-              </Box>
-            </Box>
+                )}
+              </DialogContent>
+              <DialogActions sx={{ px: 3, pb: 3 }}>
+                <Button onClick={handleClose} color="primary" disabled={isLoading}>
+                  Cancel
+                </Button>
+                <Button 
+                  type="submit"
+                  variant="contained" 
+                  color="primary"
+                  disabled={isLoading}
+                  startIcon={isLoading ? <CircularProgress size={20} color="inherit" /> : null}
+                >
+                  {isLoading ? 'Saving...' : 'Save Project'}
+                </Button>
+              </DialogActions>
+            </Form>
           )}
-        </DialogContent>
-        <DialogActions sx={{ px: 3, pb: 3 }}>
-          <Button onClick={handleClose} color="primary" disabled={isLoading}>
-            Cancel
-          </Button>
-          <Button 
-            onClick={handleSave} 
-            variant="contained" 
-            color="primary"
-            disabled={!newProject.title || !newProject.description || isLoading}
-            startIcon={isLoading ? <CircularProgress size={20} color="inherit" /> : null}
-          >
-            {isLoading ? 'Saving...' : 'Save Project'}
-          </Button>
-        </DialogActions>
+        </Formik>
       </Dialog>
 
       <Dialog open={imageDialogOpen} onClose={closeImageDialog} maxWidth="md" fullWidth>

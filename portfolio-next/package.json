@@ -10,6 +10,7 @@
     "@mui/icons-material": "^5.17.1",
     "@mui/material": "^5.17.1",
     "@tanstack/react-query": "^5.72.2",
+    "@types/yup": "^0.32.0",
     "acorn": "^8.14.1",
     "acorn-jsx": "^5.3.2",
     "ajv": "^6.12.6",
@@ -120,6 +121,7 @@
     "for-each": "^0.3.5",
     "foreground-child": "^3.3.1",
     "form-data": "^4.0.2",
+    "formik": "^2.4.6",
     "fs.realpath": "^1.0.0",
     "function-bind": "^1.1.2",
     "function.prototype.name": "^1.1.8",
@@ -347,7 +349,8 @@
     "wrap-ansi-cjs": "^7.0.0",
     "wrappy": "^1.0.2",
     "yaml": "^2.7.1",
-    "yocto-queue": "^0.1.0"
+    "yocto-queue": "^0.1.0",
+    "yup": "^1.6.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
