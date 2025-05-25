@@ -224,7 +224,6 @@ export default function Navbar() {
                       sx={{ 
                         mx: 2, 
                         color: theme.palette.text.primary,
-                        fontWeight: 500,
                         borderRadius: theme.shape.borderRadius,
                         transition: 'all 0.2s ease-in-out',
                         '&:hover': {
@@ -270,7 +269,6 @@ export default function Navbar() {
                     sx={{ 
                       mx: 2, 
                       color: theme.palette.text.primary,
-                      fontWeight: 500,
                       borderRadius: theme.shape.borderRadius,
                       transition: 'all 0.2s ease-in-out',
                       '&:hover': {
