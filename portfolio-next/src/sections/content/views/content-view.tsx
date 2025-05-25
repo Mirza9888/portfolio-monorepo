@@ -190,14 +190,6 @@ export default function ContentView() {
           boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
         }}
       >
-
-          sx={{ 
-            borderRadius: '12px', 
-            overflow: 'hidden',
-            mb: 4,
-            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
-          }}
-        >
           <Box 
             sx={{ 
               height: '6px', 
