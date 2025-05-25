@@ -135,7 +135,7 @@ export default function Navbar() {
       ))}
       {user ? (
         <IconButton
-          onClick={handleLogout}
+          onClick={(e) => setAnchorEl(e.currentTarget)}
           sx={{
             color: theme.palette.mode === 'dark' ? '#64b5f6' : theme.palette.primary.main,
             '&:hover': {
@@ -147,17 +147,17 @@ export default function Navbar() {
             transition: 'all 0.2s ease-in-out',
           }}
         >
-          <img
-            src="/icons/house.png"
-            alt="Logout"
-            style={{
-              width: 20,
-              height: 20,
-              filter: theme.palette.mode === 'dark' 
-                ? 'drop-shadow(0 1px 2px rgba(255, 255, 255, 0.15))' 
-                : 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))',
+          <Avatar 
+            alt={user.name || 'User Avatar'} 
+            sx={{
+              width: 24,
+              height: 24,
+              boxShadow: '0 1px 4px rgba(0, 0, 0, 0.1)',
+              bgcolor: theme.palette.primary.main
             }}
-          />
+          >
+            {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
+          </Avatar>
         </IconButton>
       ) : (
         <IconButton
