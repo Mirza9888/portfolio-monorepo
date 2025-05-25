@@ -1,4 +1,3 @@
-
 import {
   Box,
   Typography,
@@ -8,6 +7,7 @@ import {
   useTheme,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import { memo } from 'react';
 
 interface Props {
   projects: any[];
@@ -16,12 +16,12 @@ interface Props {
   onAddProject: () => void;
 }
 
-export default function ContentList({ 
+const ContentList = memo(({ 
   projects, 
   selectedProjectIndex, 
   onProjectSelect, 
   onAddProject 
-}: Props) {
+}: Props) => {
   const theme = useTheme();
 
   return (
@@ -30,7 +30,9 @@ export default function ContentList({
         height: '100%',
         borderRadius: '12px',
         overflow: 'hidden',
-        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)'
+        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
+        willChange: 'transform',
+        transform: 'translateZ(0)',
       }}
     >
       <Box sx={{ p: 2, borderBottom: 1, borderColor: 'divider', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -47,7 +49,22 @@ export default function ContentList({
         </Button>
       </Box>
       
-      <Box sx={{ height: '515px', overflow: 'auto', p: 2 }}>
+      <Box 
+        sx={{ 
+          height: '515px', 
+          overflow: 'auto', 
+          p: 2,
+          WebkitOverflowScrolling: 'touch',
+          scrollbarWidth: 'thin',
+          '&::-webkit-scrollbar': {
+            width: '6px',
+          },
+          '&::-webkit-scrollbar-thumb': {
+            backgroundColor: 'rgba(0,0,0,0.2)',
+            borderRadius: '3px',
+          },
+        }}
+      >
         {projects.length > 0 ? (
           projects.map((project, index) => (
             <Paper
@@ -160,4 +177,6 @@ export default function ContentList({
       </Box>
     </Card>
   );
-}
+});
+
+export default ContentList;

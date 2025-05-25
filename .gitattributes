@@ -1,0 +1,14 @@
+# Configuration files that should keep their local versions
+.env merge=ours
+docker-compose.yml merge=ours
+docker-compose.prod.yml merge=ours
+Docker/nginx/default.conf merge=ours
+portfolio-laravel/config/cors.php merge=ours
+portfolio-laravel/config/session.php merge=ours
+portfolio-next/next.config.mjs merge=ours
+Dockerfile merge=ours
+Dockerfile.certbot merge=ours
+portfolio-laravel/Dockerfile merge=ours
+portfolio-next/Dockerfile merge=ours
+init-letsencrypt.sh merge=ours
+deploy.sh merge=ours 

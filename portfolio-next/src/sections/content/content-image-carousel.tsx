@@ -1,5 +1,3 @@
-
-
 import { useState } from 'react';
 import {
   Box,
@@ -19,6 +17,7 @@ interface ContentImageCarouselProps {
 export default function ContentImageCarousel({ project, onOpenImageViewer }: ContentImageCarouselProps) {
   const theme = useTheme();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [imageLoadError, setImageLoadError] = useState(false);
   
 
 
@@ -46,6 +45,10 @@ export default function ContentImageCarousel({ project, onOpenImageViewer }: Con
       ? project.images[currentImageIndex] 
       : project?.image || "No image";
 
+  const handleImageError = () => {
+    setImageLoadError(true);
+  };
+
   return (
     <Box sx={{ position: 'relative', bgcolor: 'black' }}>
       <CardMedia
@@ -53,10 +56,13 @@ export default function ContentImageCarousel({ project, onOpenImageViewer }: Con
         height="400"
         image={currentImage}
         alt={project?.title || "Project image"}
+        onError={handleImageError}
+        loading="lazy"
         sx={{ 
           objectFit: "contain",
           bgcolor: '#f5f5f5',
           cursor: 'pointer',
+          opacity: imageLoadError ? 0.5 : 1,
         }}
         onClick={() => onOpenImageViewer(currentImageIndex)}
       />

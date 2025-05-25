@@ -12,12 +12,16 @@ import {
   Alert,
   Paper, // Koristi Paper umjesto Card
   CardContent,
+  InputAdornment,
+  IconButton,
 } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
   const { login } = useAuth();
 
@@ -64,13 +68,53 @@ export default function Login() {
 
             <TextField
               label="Password"
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               fullWidth
               required
               margin="normal"
               InputLabelProps={{ required: false }}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() => setShowPassword(!showPassword)}
+                      edge="end"
+                      size="small"
+                      sx={{
+                        color: 'primary.main',
+                        '&:hover': {
+                          backgroundColor: 'rgba(144, 202, 249, 0.2)',
+                        },
+                        padding: '4px',
+                      }}
+                    >
+                      {showPassword ? 
+                        <VisibilityOff sx={{ fontSize: '1.4rem' }} /> : 
+                        <Visibility sx={{ fontSize: '1.4rem' }} />
+                      }
+                    </IconButton>
+                  </InputAdornment>
+                ),
+                sx: {
+                  '&.Mui-focused': {
+                    backgroundColor: 'rgba(144, 202, 249, 0.1)',
+                  },
+                  '& fieldset': {
+                    borderColor: 'primary.main',
+                  },
+                  '& input:-webkit-autofill': {
+                    boxShadow: '0 0 0 1000px rgba(144, 202, 249, 0.3) inset',
+                    transition: 'background-color 5000s ease-in-out 0s',
+                  },
+                  '& input:-webkit-autofill:focus': {
+                    boxShadow: '0 0 0 1000px rgba(144, 202, 249, 0.4) inset',
+                    transition: 'background-color 5000s ease-in-out 0s',
+                  },
+                }
+              }}
             />
 
             {error && (
