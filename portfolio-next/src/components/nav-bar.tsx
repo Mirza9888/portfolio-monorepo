@@ -347,6 +347,39 @@ export default function Navbar() {
             </Toolbar>
           </Container>
         </AppBar>
+        {isMobile && user && (
+          <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={() => setAnchorEl(null)}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+            PaperProps={{
+              sx: {
+                mt: 1.5,
+                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
+                borderRadius: theme.shape.borderRadius,
+                minWidth: '150px',
+                border: '1px solid rgba(0, 0, 0, 0.05)'
+              }
+            }}
+          >
+            <MenuItem 
+              onClick={handleLogout}
+              sx={{
+                borderRadius: '6px',
+                mx: 0.5,
+                px: 2,
+                py: 1,
+                '&:hover': {
+                  backgroundColor: 'rgba(33, 150, 243, 0.08)'
+                }
+              }}
+            >
+              Logout
+            </MenuItem>
+          </Menu>
+        )}
       </>
     </HideOnScroll>
   );
