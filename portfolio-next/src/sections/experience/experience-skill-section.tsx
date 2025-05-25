@@ -1,5 +1,3 @@
-'use client';
-
 import { Box, Typography, Stack, Chip, useTheme } from '@mui/material';
 import CodeIcon from '@mui/icons-material/Code';
 import StorageIcon from '@mui/icons-material/Storage';

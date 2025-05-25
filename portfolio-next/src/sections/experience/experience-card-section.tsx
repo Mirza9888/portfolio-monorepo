@@ -1,5 +1,3 @@
-'use client';
-
 import { Box, Typography, Avatar, Tooltip, useTheme } from '@mui/material';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 
