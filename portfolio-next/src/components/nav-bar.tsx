@@ -189,9 +189,19 @@ export default function Navbar() {
                 height: 20,
                 marginRight: 12,
                 filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))',
+                opacity: 0.9
               }}
             />
-            <ListItemText primary="Login" />
+            <ListItemText 
+              primary="Login" 
+              primaryTypographyProps={{
+                sx: {
+                  fontWeight: 500,
+                  fontSize: '0.95rem',
+                  letterSpacing: '0.3px'
+                }
+              }}
+            />
           </ListItem>
         )}
       </List>
@@ -226,6 +236,10 @@ export default function Navbar() {
                         color: theme.palette.text.primary,
                         borderRadius: theme.shape.borderRadius,
                         transition: 'all 0.2s ease-in-out',
+                        textTransform: 'none',
+                        fontWeight: 500,
+                        fontSize: '0.95rem',
+                        letterSpacing: '0.3px',
                         '&:hover': {
                           backgroundColor: 'rgba(33, 150, 243, 0.08)',
                           transform: 'translateY(-2px)'
@@ -236,8 +250,8 @@ export default function Navbar() {
                           src={item.icon} 
                           alt={item.text} 
                           style={{ 
-                            width: 22, 
-                            height: 22, 
+                            width: 20, 
+                            height: 20, 
                             filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))'
                           }} 
                         />
@@ -271,6 +285,10 @@ export default function Navbar() {
                       color: theme.palette.text.primary,
                       borderRadius: theme.shape.borderRadius,
                       transition: 'all 0.2s ease-in-out',
+                      textTransform: 'none',
+                      fontWeight: 500,
+                      fontSize: '0.95rem',
+                      letterSpacing: '0.3px',
                       '&:hover': {
                         backgroundColor: 'rgba(33, 150, 243, 0.08)',
                         transform: 'translateY(-2px)'
@@ -283,7 +301,8 @@ export default function Navbar() {
                         style={{ 
                           width: 20, 
                           height: 20,
-                          filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))'
+                          filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))',
+                          opacity: 0.9
                         }} 
                       />
                     }
