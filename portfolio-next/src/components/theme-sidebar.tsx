@@ -9,19 +9,18 @@ import { useTheme } from '@/context/ThemeContext';
 
 const SidebarContainer = styled(Box)(({ theme }) => ({
   position: 'fixed',
-  right: 0,
-  top: '50%',
-  transform: 'translateY(-50%)',
+  right: '1rem',
+  top: '1rem',
   zIndex: 1000,
   display: 'flex',
-  flexDirection: 'column',
+  flexDirection: 'row',
   alignItems: 'center',
-  gap: '1rem',
-  padding: '1rem',
+  gap: '0.5rem',
+  padding: '0.5rem',
   backgroundColor: theme.palette.background.paper,
-  boxShadow: '-2px 0 8px rgba(0, 0, 0, 0.1)',
-  borderRadius: '8px 0 0 8px',
-  transition: 'transform 0.3s ease-in-out',
+  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+  borderRadius: '8px',
+  transition: 'all 0.3s ease-in-out',
 }));
 
 const ThemeSwitch = styled(Switch)(({ theme }) => ({
@@ -45,28 +44,7 @@ export default function ThemeSidebar() {
   const theme = useMuiTheme();
 
   return (
-    <SidebarContainer
-      sx={{
-        transform: isOpen ? 'translateY(-50%)' : 'translate(calc(100% - 40px), -50%)',
-      }}
-    >
-      <IconButton
-        onClick={() => setIsOpen(!isOpen)}
-        sx={{
-          position: 'absolute',
-          left: '-20px',
-          top: '50%',
-          transform: 'translateY(-50%)',
-          backgroundColor: theme.palette.background.paper,
-          boxShadow: '-2px 0 8px rgba(0, 0, 0, 0.1)',
-          '&:hover': {
-            backgroundColor: theme.palette.background.paper,
-          },
-        }}
-      >
-        {isOpen ? '→' : '←'}
-      </IconButton>
-      
+    <SidebarContainer>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
         <Brightness7Icon color={mode === 'light' ? 'primary' : 'action'} />
         <ThemeSwitch
