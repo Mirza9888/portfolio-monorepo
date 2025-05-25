@@ -30,7 +30,7 @@ export default function Login() {
     try {
       const response = await authService.login(email, password);
 
-      document.cookie = `token=${response.token}; path=/`;
+      document.cookie = `token=${response.token}; path=/; secure; samesite=strict; max-age=86400`; // 24 hours
       login(response.token, response.user);
 
       router.push('/about'); 

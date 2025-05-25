@@ -21,6 +21,16 @@ type Props = {
 export default function ExperienceCardSection({ experiences }: Props) {
   const theme = useTheme();
 
+  if (!experiences || experiences.length === 0) {
+    return (
+      <Box sx={{ p: 3, textAlign: 'center' }}>
+        <Typography color="text.secondary">
+          No experience data available.
+        </Typography>
+      </Box>
+    );
+  }
+
   return (
     <>
       {experiences.map((experience, index) => (

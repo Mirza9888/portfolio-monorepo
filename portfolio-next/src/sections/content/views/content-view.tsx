@@ -23,6 +23,7 @@ import ContentList from '../content-list';
 import ContentImageCarousel from '../content-image-carousel';
 import ContentDetails from '../content-details';
 import ContentNotification from '../content-notification';
+import SectionWrapper from '@/components/section-wrapper';
 import { Content } from '@/types/content';
 
 export default function ContentView() {
@@ -113,47 +114,38 @@ export default function ContentView() {
 
   if (isLoading) {
     return (
-      <>
-        <Head>
-          <title>Loading Projects - Portfolio</title>
-          <meta name="description" content="Loading portfolio projects..." />
-        </Head>
-        <Container maxWidth="lg" sx={{ py: 4, mt: 15, display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
+
+      <SectionWrapper>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
           <Box sx={{ textAlign: 'center' }}>
-            <CircularProgress color="primary" size={40} />
-            <Typography variant="h6" sx={{ mt: 2, color: 'text.secondary' }}>Loading projects...</Typography>
+            <CircularProgress color="primary" />
+            <Typography variant="h6" sx={{ mt: 2 }}>Loading projects...</Typography>
           </Box>
-        </Container>
-      </>
+        </Box>
+      </SectionWrapper>
+
     );
   }
 
   if (queryError) {
     return (
-      <>
-        <Head>
-          <title>Error - Portfolio Projects</title>
-          <meta name="description" content="Error loading portfolio projects" />
-        </Head>
-        <Container maxWidth="lg" sx={{ py: 4, mt: 15 }}>
-          <Paper elevation={3} sx={{ p: 4, textAlign: 'center', borderRadius: '12px' }}>
-            <Typography variant="h5" color="error" gutterBottom>
-              Failed to load projects
-            </Typography>
-            <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
-              {queryError instanceof Error ? queryError.message : 'Please try again later'}
-            </Typography>
-            <Button 
-              variant="contained" 
-              color="primary" 
-              onClick={() => window.location.reload()}
-              sx={{ mt: 2 }}
-            >
-              Retry
-            </Button>
-          </Paper>
-        </Container>
-      </>
+
+      <SectionWrapper>
+        <Paper elevation={3} sx={{ p: 4, textAlign: 'center', borderRadius: '12px' }}>
+          <Typography variant="h5" color="error" gutterBottom>
+            Failed to load projects. Please try again later.
+          </Typography>
+          <Button 
+            variant="contained" 
+            color="primary" 
+            onClick={() => window.location.reload()}
+            sx={{ mt: 2 }}
+          >
+            Retry
+          </Button>
+        </Paper>
+      </SectionWrapper>
+
     );
   }
 
@@ -187,20 +179,18 @@ export default function ContentView() {
   }
 
   return (
-    <>
-      <Head>
-        <title>{seoTitle}</title>
-        <meta name="description" content={seoDescription} />
-        <meta property="og:title" content={seoTitle} />
-        <meta property="og:description" content={seoDescription} />
-        {currentProject.images?.[0] && (
-          <meta property="og:image" content={currentProject.images[0]} />
-        )}
-      </Head>
 
-      <Container maxWidth="lg" sx={{ py: 4, mt: 15 }}>
-        <Paper 
-          elevation={3} 
+    <SectionWrapper maxWidth="lg">
+      <Paper 
+        elevation={3} 
+        sx={{ 
+          borderRadius: '12px', 
+          overflow: 'hidden',
+          mb: 4,
+          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+        }}
+      >
+
           sx={{ 
             borderRadius: '12px', 
             overflow: 'hidden',
@@ -316,28 +306,29 @@ export default function ContentView() {
           </Fab>
         </Box>
 
-        <ContentEditDialog 
-          open={dialogOpen}
-          onClose={() => setDialogOpen(false)}
-          onSave={handleSaveProject}
-          isLoading={saveLoading}
-        />
-        
-        <ContentImageViewer 
-          open={imageViewerOpen}
-          onClose={closeImageViewer}
-          images={projectImages}
-          initialIndex={viewerImageIndex} 
-          projectTitle={currentProject.title || ''} 
-        />
-        
-        <ContentNotification
-          open={notification.open}
-          message={notification.message}
-          severity={notification.severity}
-          onClose={handleCloseNotification}
-        />
-      </Container>
-    </>
+
+      <ContentEditDialog 
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        onSave={handleSaveProject}
+        isLoading={saveLoading}
+      />
+      
+      <ContentImageViewer 
+        open={imageViewerOpen}
+        onClose={closeImageViewer}
+        images={Array.isArray(projectImages) ? projectImages : []}
+        initialIndex={viewerImageIndex} 
+        projectTitle={''} 
+      />
+      
+      <ContentNotification
+        open={notification.open}
+        message={notification.message}
+        severity={notification.severity}
+        onClose={handleCloseNotification}
+      />
+    </SectionWrapper>
+
   );
 }

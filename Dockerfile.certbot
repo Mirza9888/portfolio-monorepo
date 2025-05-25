@@ -1,0 +1,7 @@
+FROM alpine:latest
+
+RUN apk add --no-cache openssl
+
+WORKDIR /certs
+
+CMD ["sh", "-c", "cp -r /etc/letsencrypt/live/mirzaredzic.duckdns.org/* /certs/"] 
