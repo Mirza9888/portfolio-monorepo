@@ -11,8 +11,8 @@
 }
 
 [data-theme='dark'] {
-  --background: #121212;
-  --foreground: #ededed;
+  --background: #0a1929;
+  --foreground: #ffffff;
 }
 
 body {
@@ -25,4 +25,37 @@ body {
 /* Add smooth transitions for theme changes */
 * {
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Dark mode specific styles */
+[data-theme='dark'] {
+  /* Improve contrast for better readability */
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --hover-bg: rgba(255, 255, 255, 0.05);
+}
+
+/* Add subtle hover effects for interactive elements */
+[data-theme='dark'] button:hover,
+[data-theme='dark'] a:hover {
+  background-color: var(--hover-bg);
+}
+
+/* Improve card and paper component shadows in dark mode */
+[data-theme='dark'] .MuiPaper-root {
+  box-shadow: 0 4px 20px var(--shadow-color) !important;
+}
+
+/* Improve text contrast in dark mode */
+[data-theme='dark'] .MuiTypography-root {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+/* Improve form control contrast in dark mode */
+[data-theme='dark'] .MuiInputBase-root {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Improve button contrast in dark mode */
+[data-theme='dark'] .MuiButton-root {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }

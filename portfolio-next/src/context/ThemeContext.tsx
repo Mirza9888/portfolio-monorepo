@@ -60,17 +60,17 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
               dark: '#ab47bc',
             },
             background: {
-              default: '#121212',
-              paper: '#1e1e1e',
+              default: '#0a1929',
+              paper: '#132f4c',
             },
             text: {
-              primary: 'rgba(255, 255, 255, 0.87)',
-              secondary: 'rgba(255, 255, 255, 0.6)',
-              disabled: 'rgba(255, 255, 255, 0.38)',
+              primary: 'rgba(255, 255, 255, 0.95)',
+              secondary: 'rgba(255, 255, 255, 0.7)',
+              disabled: 'rgba(255, 255, 255, 0.5)',
             },
             divider: 'rgba(255, 255, 255, 0.12)',
             action: {
-              active: 'rgba(255, 255, 255, 0.56)',
+              active: 'rgba(255, 255, 255, 0.7)',
               hover: 'rgba(255, 255, 255, 0.08)',
               selected: 'rgba(255, 255, 255, 0.16)',
               disabled: 'rgba(255, 255, 255, 0.3)',
