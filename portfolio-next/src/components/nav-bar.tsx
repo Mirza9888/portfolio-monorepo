@@ -233,29 +233,15 @@ export default function Navbar() {
                       href={item.href} 
                       sx={{ 
                         mx: 2, 
-                        color: theme.palette.text.primary,
+                        color: theme.palette.primary.main,
+                        fontWeight: 500,
                         borderRadius: theme.shape.borderRadius,
                         transition: 'all 0.2s ease-in-out',
-                        textTransform: 'none',
-                        fontWeight: 500,
-                        fontSize: '0.95rem',
-                        letterSpacing: '0.3px',
                         '&:hover': {
                           backgroundColor: 'rgba(33, 150, 243, 0.08)',
                           transform: 'translateY(-2px)'
                         }
                       }}
-                      startIcon={
-                        <img 
-                          src={item.icon} 
-                          alt={item.text} 
-                          style={{ 
-                            width: 20, 
-                            height: 20, 
-                            filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))'
-                          }} 
-                        />
-                      }
                     >
                       {item.text}
                     </Button>
@@ -280,20 +266,6 @@ export default function Navbar() {
                   <Button
                     component={Link}
                     href="/login"
-                    sx={{ 
-                      mx: 2, 
-                      color: theme.palette.text.primary,
-                      borderRadius: theme.shape.borderRadius,
-                      transition: 'all 0.2s ease-in-out',
-                      textTransform: 'none',
-                      fontWeight: 500,
-                      fontSize: '0.95rem',
-                      letterSpacing: '0.3px',
-                      '&:hover': {
-                        backgroundColor: 'rgba(33, 150, 243, 0.08)',
-                        transform: 'translateY(-2px)'
-                      }
-                    }}
                     startIcon={
                       <img 
                         src="/icons/house.png" 
@@ -301,11 +273,20 @@ export default function Navbar() {
                         style={{ 
                           width: 20, 
                           height: 20,
-                          filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))',
-                          opacity: 0.9
+                          filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))'
                         }} 
                       />
                     }
+                    sx={{ 
+                      color: theme.palette.primary.main,
+                      fontWeight: 500,
+                      borderRadius: theme.shape.borderRadius,
+                      transition: 'all 0.2s ease-in-out',
+                      '&:hover': {
+                        backgroundColor: 'rgba(33, 150, 243, 0.08)',
+                        transform: 'translateY(-2px)'
+                      }
+                    }}
                   >
                     Login
                   </Button>
