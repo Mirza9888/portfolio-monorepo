@@ -226,26 +226,118 @@ export default function Navbar() {
               
               {!isMobile ? (
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                  {navItems.map((item) => (
-                    <Button 
-                      key={item.text}
-                      component={Link} 
-                      href={item.href} 
-                      sx={{ 
-                        mx: 2, 
-                        color: theme.palette.primary.main,
-                        fontWeight: 500,
-                        borderRadius: theme.shape.borderRadius,
-                        transition: 'all 0.2s ease-in-out',
-                        '&:hover': {
-                          backgroundColor: 'rgba(33, 150, 243, 0.08)',
-                          transform: 'translateY(-2px)'
-                        }
-                      }}
-                    >
-                      {item.text}
-                    </Button>
-                  ))}
+                  <Button 
+                    component={Link} 
+                    href="/about" 
+                    sx={{ 
+                      mx: 2, 
+                      color: theme.palette.primary.main,
+                      fontWeight: 500,
+                      borderRadius: theme.shape.borderRadius,
+                      transition: 'all 0.2s ease-in-out',
+                      '&:hover': {
+                        backgroundColor: 'rgba(33, 150, 243, 0.08)',
+                        transform: 'translateY(-2px)'
+                      }
+                    }}
+                    startIcon={
+                      <img 
+                        src="/icons/assistance.png" 
+                        alt="About" 
+                        style={{ 
+                          width: 22, 
+                          height: 22, 
+                          filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))'
+                        }} 
+                      />
+                    }
+                  >
+                    About Me
+                  </Button>
+                  <Button 
+                    component={Link} 
+                    href="/content" 
+                    sx={{ 
+                      mx: 2, 
+                      color: theme.palette.primary.main,
+                      fontWeight: 500,
+                      borderRadius: theme.shape.borderRadius,
+                      transition: 'all 0.2s ease-in-out',
+                      '&:hover': {
+                        backgroundColor: 'rgba(33, 150, 243, 0.08)',
+                        transform: 'translateY(-2px)'
+                      }
+                    }}
+                    startIcon={
+                      <img 
+                        src="/icons/responsive.png" 
+                        alt="Content" 
+                        style={{ 
+                          width: 22, 
+                          height: 22, 
+                          filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))'
+                        }} 
+                      />
+                    }
+                  >
+                    Content
+                  </Button>
+                  <Button 
+                    component={Link} 
+                    href="/experience" 
+                    sx={{ 
+                      mx: 2, 
+                      color: theme.palette.primary.main,
+                      fontWeight: 500,
+                      borderRadius: theme.shape.borderRadius,
+                      transition: 'all 0.2s ease-in-out',
+                      '&:hover': {
+                        backgroundColor: 'rgba(33, 150, 243, 0.08)',
+                        transform: 'translateY(-2px)'
+                      }
+                    }}
+                    startIcon={
+                      <img 
+                        src="/icons/24-hours.png" 
+                        alt="Experience" 
+                        style={{ 
+                          width: 22, 
+                          height: 22, 
+                          filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))'
+                        }} 
+                      />
+                    }
+                  >
+                    Experience
+                  </Button>
+                  <Button 
+                    component={Link} 
+                    href="/contact" 
+                    sx={{ 
+                      mx: 2, 
+                      color: theme.palette.primary.main,
+                      fontWeight: 500,
+                      borderRadius: theme.shape.borderRadius,
+                      transition: 'all 0.2s ease-in-out',
+                      '&:hover': {
+                        backgroundColor: 'rgba(33, 150, 243, 0.08)',
+                        transform: 'translateY(-2px)'
+                      }
+                    }}
+                    startIcon={
+                      <img 
+                        src="/icons/telephone.png" 
+                        alt="Contact" 
+                        style={{ 
+                          width: 22, 
+                          height: 22, 
+                          filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))'
+                        }} 
+                      />
+                    }
+                  >
+                    Contact
+                  </Button>
                 </Box>
               ) : (
                 <IconButton
