@@ -121,6 +121,7 @@ const theme = createTheme({
       secondary: 'rgba(0, 0, 0, 0.6)',
       disabled: 'rgba(0, 0, 0, 0.38)',
     },
+    mode: 'light',
   },
   shape: {
     borderRadius: 8,

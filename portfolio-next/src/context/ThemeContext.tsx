@@ -68,6 +68,14 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
               secondary: 'rgba(255, 255, 255, 0.6)',
               disabled: 'rgba(255, 255, 255, 0.38)',
             },
+            divider: 'rgba(255, 255, 255, 0.12)',
+            action: {
+              active: 'rgba(255, 255, 255, 0.56)',
+              hover: 'rgba(255, 255, 255, 0.08)',
+              selected: 'rgba(255, 255, 255, 0.16)',
+              disabled: 'rgba(255, 255, 255, 0.3)',
+              disabledBackground: 'rgba(255, 255, 255, 0.12)',
+            },
           }),
     },
   });

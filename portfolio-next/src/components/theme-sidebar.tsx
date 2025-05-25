@@ -40,7 +40,7 @@ const ThemeSwitch = styled(Switch)(({ theme }) => ({
 }));
 
 export default function ThemeSidebar() {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const { mode, toggleTheme } = useTheme();
   const theme = useMuiTheme();
 

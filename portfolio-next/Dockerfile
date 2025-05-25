@@ -3,12 +3,15 @@ FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-# Install dependencies
+# Install dependencies first (better caching)
 COPY package*.json ./
 RUN npm ci
 
-# Copy source code
-COPY . .
+# Copy only necessary files for build
+COPY next.config.js ./
+COPY tsconfig.json ./
+COPY public ./public
+COPY src ./src
 
 # Set production environment
 ENV NODE_ENV=production
@@ -29,10 +32,10 @@ ENV HOSTNAME=0.0.0.0
 ENV NEXT_TELEMETRY_DISABLED=1
 
 # Create a non-root user
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nextjs
 
-# Copy necessary files from builder
+# Copy only necessary files from builder
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
