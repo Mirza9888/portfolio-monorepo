@@ -112,9 +112,11 @@ export default function Navbar() {
           component={Link}
           href={item.href}
           sx={{
-            color: theme.palette.primary.main,
+            color: theme.palette.mode === 'dark' ? '#64b5f6' : theme.palette.primary.main,
             '&:hover': {
-              backgroundColor: 'rgba(33, 150, 243, 0.08)',
+              backgroundColor: theme.palette.mode === 'dark' 
+                ? 'rgba(100, 181, 246, 0.08)' 
+                : 'rgba(33, 150, 243, 0.08)',
               transform: 'translateY(-2px)'
             },
             transition: 'all 0.2s ease-in-out',
@@ -135,9 +137,11 @@ export default function Navbar() {
         <IconButton
           onClick={handleLogout}
           sx={{
-            color: theme.palette.primary.main,
+            color: theme.palette.mode === 'dark' ? '#64b5f6' : theme.palette.primary.main,
             '&:hover': {
-              backgroundColor: 'rgba(33, 150, 243, 0.08)',
+              backgroundColor: theme.palette.mode === 'dark' 
+                ? 'rgba(100, 181, 246, 0.08)' 
+                : 'rgba(33, 150, 243, 0.08)',
               transform: 'translateY(-2px)'
             },
             transition: 'all 0.2s ease-in-out',
@@ -149,7 +153,9 @@ export default function Navbar() {
             style={{
               width: 20,
               height: 20,
-              filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))',
+              filter: theme.palette.mode === 'dark' 
+                ? 'drop-shadow(0 1px 2px rgba(255, 255, 255, 0.15))' 
+                : 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))',
             }}
           />
         </IconButton>
@@ -158,9 +164,11 @@ export default function Navbar() {
           component={Link}
           href="/login"
           sx={{
-            color: theme.palette.primary.main,
+            color: theme.palette.mode === 'dark' ? '#64b5f6' : theme.palette.primary.main,
             '&:hover': {
-              backgroundColor: 'rgba(33, 150, 243, 0.08)',
+              backgroundColor: theme.palette.mode === 'dark' 
+                ? 'rgba(100, 181, 246, 0.08)' 
+                : 'rgba(33, 150, 243, 0.08)',
               transform: 'translateY(-2px)'
             },
             transition: 'all 0.2s ease-in-out',
@@ -172,7 +180,9 @@ export default function Navbar() {
             style={{
               width: 20,
               height: 20,
-              filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))',
+              filter: theme.palette.mode === 'dark' 
+                ? 'drop-shadow(0 1px 2px rgba(255, 255, 255, 0.15))' 
+                : 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))',
             }}
           />
         </IconButton>
@@ -187,9 +197,14 @@ export default function Navbar() {
           position="fixed" 
           elevation={0} 
           sx={{ 
-            backgroundColor: 'white',
-            boxShadow: '0 1px 8px rgba(0, 0, 0, 0.08)',
-            borderBottom: '1px solid rgba(0, 0, 0, 0.06)'
+            backgroundColor: theme.palette.mode === 'dark' ? '#000000' : 'white',
+            boxShadow: theme.palette.mode === 'dark' 
+              ? '0 1px 8px rgba(255, 255, 255, 0.08)' 
+              : '0 1px 8px rgba(0, 0, 0, 0.08)',
+            borderBottom: theme.palette.mode === 'dark'
+              ? '1px solid rgba(255, 255, 255, 0.06)'
+              : '1px solid rgba(0, 0, 0, 0.06)',
+            transition: 'background-color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease'
           }}
         >
           <Container maxWidth="lg">
@@ -205,12 +220,14 @@ export default function Navbar() {
                       href={item.href} 
                       sx={{ 
                         mx: 2, 
-                        color: theme.palette.primary.main,
+                        color: theme.palette.mode === 'dark' ? '#64b5f6' : theme.palette.primary.main,
                         fontWeight: 500,
                         borderRadius: theme.shape.borderRadius,
                         transition: 'all 0.2s ease-in-out',
                         '&:hover': {
-                          backgroundColor: 'rgba(33, 150, 243, 0.08)',
+                          backgroundColor: theme.palette.mode === 'dark' 
+                            ? 'rgba(100, 181, 246, 0.08)' 
+                            : 'rgba(33, 150, 243, 0.08)',
                           transform: 'translateY(-2px)'
                         }
                       }}
@@ -246,17 +263,21 @@ export default function Navbar() {
                         style={{ 
                           width: 20, 
                           height: 20,
-                          filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))'
+                          filter: theme.palette.mode === 'dark' 
+                            ? 'drop-shadow(0 1px 2px rgba(255, 255, 255, 0.15))' 
+                            : 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15))'
                         }} 
                       />
                     }
                     sx={{ 
-                      color: theme.palette.primary.main,
+                      color: theme.palette.mode === 'dark' ? '#64b5f6' : theme.palette.primary.main,
                       fontWeight: 500,
                       borderRadius: theme.shape.borderRadius,
                       transition: 'all 0.2s ease-in-out',
                       '&:hover': {
-                        backgroundColor: 'rgba(33, 150, 243, 0.08)',
+                        backgroundColor: theme.palette.mode === 'dark' 
+                          ? 'rgba(100, 181, 246, 0.08)' 
+                          : 'rgba(33, 150, 243, 0.08)',
                         transform: 'translateY(-2px)'
                       }
                     }}
