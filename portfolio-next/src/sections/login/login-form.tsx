@@ -54,9 +54,10 @@ export default function LoginForm({ onSubmit, error }: LoginFormProps) {
           background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.light} 100%)`,
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
+          textAlign: 'center',
         }}
       >
-        Welcome Back
+        Welcome to my portfolio
       </Typography>
       
       <Formik
