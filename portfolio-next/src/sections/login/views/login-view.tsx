@@ -54,12 +54,33 @@ export default function Login() {
           minHeight: '100vh',
           display: 'flex',
           alignItems: 'center',
+          pt: { xs: '70px', md: 0 },
+          mt: { xs: 0, md: 0 },
           background: theme.palette.mode === 'dark'
             ? `linear-gradient(135deg, ${alpha(theme.palette.background.default, 0.95)} 0%, ${alpha(theme.palette.background.paper, 0.95)} 100%)`
             : `linear-gradient(135deg, ${alpha('#f8f9fa', 0.95)} 0%, ${alpha('#ffffff', 0.95)} 100%)`,
+          position: 'relative',
+          overflow: 'hidden',
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: `radial-gradient(circle at 50% 50%, ${alpha(theme.palette.primary.main, 0.1)} 0%, transparent 50%)`,
+            pointerEvents: 'none',
+          }
         }}
       >
-        <Container maxWidth="lg">
+        <Container 
+          maxWidth="lg" 
+          sx={{ 
+            position: 'relative', 
+            zIndex: 1,
+            py: { xs: 4, md: 6 }
+          }}
+        >
           <Grid container spacing={4} alignItems="center">
             {/* Left side - Creative content */}
             <Grid item xs={12} md={6}>
@@ -79,10 +100,13 @@ export default function Login() {
                       background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.light} 100%)`,
                       WebkitBackgroundClip: 'text',
                       WebkitTextFillColor: 'transparent',
-                      fontSize: { xs: '2.5rem', md: '3.5rem' },
+                      fontSize: { xs: '2rem', sm: '2.5rem', md: '3.5rem' },
+                      lineHeight: 1.2,
+                      wordBreak: 'break-word',
+                      hyphens: 'auto',
                     }}
                   >
-                    Discover My Creative Journey
+                    Welcome to My Digital Space
                   </Typography>
                   <Typography
                     variant="h5"
@@ -90,11 +114,12 @@ export default function Login() {
                       color: theme.palette.text.secondary,
                       mb: 3,
                       fontWeight: 400,
-                      fontSize: { xs: '1.1rem', md: '1.3rem' },
+                      fontSize: { xs: '1rem', sm: '1.1rem', md: '1.3rem' },
+                      lineHeight: 1.5,
                     }}
                   >
-                    Explore a world of innovation and creativity through my portfolio. 
-                    Every project tells a unique story of passion and expertise.
+                    Step into a world where innovation meets expertise. 
+                    Explore my portfolio to discover projects that blend creativity with technical excellence.
                   </Typography>
                   <Box
                     sx={{
@@ -104,9 +129,13 @@ export default function Login() {
                       flexWrap: 'wrap',
                     }}
                   >
-                    {['Web Development', 'UI/UX Design', 'Creative Solutions'].map((tag) => (
+                    {[
+                      { text: 'Full-Stack Development', icon: '💻' },
+                      { text: 'UI/UX Design', icon: '🎨' },
+                      { text: 'Cloud Solutions', icon: '☁️' }
+                    ].map((tag) => (
                       <Paper
-                        key={tag}
+                        key={tag.text}
                         elevation={0}
                         sx={{
                           px: 2,
@@ -121,16 +150,23 @@ export default function Login() {
                             : alpha(theme.palette.primary.main, 0.1),
                           color: theme.palette.primary.main,
                           fontWeight: 500,
-                          transition: 'all 0.2s ease-in-out',
+                          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 1,
                           '&:hover': {
-                            transform: 'translateY(-2px)',
+                            transform: 'translateY(-2px) scale(1.02)',
                             background: theme.palette.mode === 'dark'
                               ? alpha(theme.palette.primary.main, 0.15)
                               : alpha(theme.palette.primary.main, 0.08),
+                            boxShadow: theme.palette.mode === 'dark'
+                              ? '0 4px 20px rgba(0, 0, 0, 0.2)'
+                              : '0 4px 20px rgba(0, 0, 0, 0.1)',
                           },
                         }}
                       >
-                        {tag}
+                        <span style={{ fontSize: '1.2rem' }}>{tag.icon}</span>
+                        {tag.text}
                       </Paper>
                     ))}
                   </Box>
@@ -144,7 +180,7 @@ export default function Login() {
                 <Paper
                   elevation={3}
                   sx={{
-                    p: 4,
+                    p: { xs: 3, md: 4 },
                     borderRadius: 4,
                     background: theme.palette.mode === 'dark'
                       ? alpha(theme.palette.background.paper, 0.8)
@@ -161,6 +197,7 @@ export default function Login() {
                       boxShadow: theme.palette.mode === 'dark'
                         ? '0 12px 48px rgba(0, 0, 0, 0.4)'
                         : '0 12px 48px rgba(0, 0, 0, 0.15)',
+                      transform: 'translateY(-2px)',
                     },
                     transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                   }}
