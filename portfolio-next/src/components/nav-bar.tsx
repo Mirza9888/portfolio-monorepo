@@ -322,19 +322,27 @@ export default function Navbar() {
                           boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
                           borderRadius: theme.shape.borderRadius,
                           minWidth: '150px',
-                          border: '1px solid rgba(0, 0, 0, 0.05)'
+                          border: '1px solid rgba(0, 0, 0, 0.05)',
+                          backgroundColor: theme.palette.mode === 'dark' ? 'rgba(33, 33, 33, 0.95)' : 'rgba(255, 255, 255, 0.95)',
+                          backdropFilter: 'blur(8px)'
                         }
                       }}
                     >
                       <MenuItem 
                         onClick={handleLogout}
                         sx={{
+                          color: theme.palette.mode === 'dark' ? '#64b5f6' : theme.palette.primary.main,
                           borderRadius: '6px',
                           mx: 0.5,
                           px: 2,
                           py: 1,
+                          fontWeight: 500,
+                          transition: 'all 0.2s ease-in-out',
                           '&:hover': {
-                            backgroundColor: 'rgba(33, 150, 243, 0.08)'
+                            backgroundColor: theme.palette.mode === 'dark' 
+                              ? 'rgba(100, 181, 246, 0.08)' 
+                              : 'rgba(33, 150, 243, 0.08)',
+                            transform: 'translateY(-1px)'
                           }
                         }}
                       >
@@ -360,19 +368,27 @@ export default function Navbar() {
                 boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
                 borderRadius: theme.shape.borderRadius,
                 minWidth: '150px',
-                border: '1px solid rgba(0, 0, 0, 0.05)'
+                border: '1px solid rgba(0, 0, 0, 0.05)',
+                backgroundColor: theme.palette.mode === 'dark' ? 'rgba(33, 33, 33, 0.95)' : 'rgba(255, 255, 255, 0.95)',
+                backdropFilter: 'blur(8px)'
               }
             }}
           >
             <MenuItem 
               onClick={handleLogout}
               sx={{
+                color: theme.palette.mode === 'dark' ? '#64b5f6' : theme.palette.primary.main,
                 borderRadius: '6px',
                 mx: 0.5,
                 px: 2,
                 py: 1,
+                fontWeight: 500,
+                transition: 'all 0.2s ease-in-out',
                 '&:hover': {
-                  backgroundColor: 'rgba(33, 150, 243, 0.08)'
+                  backgroundColor: theme.palette.mode === 'dark' 
+                    ? 'rgba(100, 181, 246, 0.08)' 
+                    : 'rgba(33, 150, 243, 0.08)',
+                  transform: 'translateY(-1px)'
                 }
               }}
             >
